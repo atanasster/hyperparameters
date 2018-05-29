@@ -1,6 +1,6 @@
 import { Random } from './random';
 
-const random = new Random();
+export const random = new Random();
 
 const HyperoptJS = {
   choice: (label, options) => {
