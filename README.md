@@ -25,39 +25,47 @@
 # Installation
 Just clone this repo and remove `.git` folder.
 
-#Function Signatures
+# Function Signatures
 
 ```hp.choice(label, options)```
 
-Randomly return one of the options
+- Randomly return one of the options
 
 ```hp.randint(label, upper)```
 
-Return a random integer in the range [0, upper)
+- Return a random integer in the range [0, upper)
 
 ```hp.uniform(label, low, high)```
-Returns a single value uniformly between ```low``` and ```high``` i.e. the mean of ```low``` and ```high```
+
+- Returns a single value uniformly between ```low``` and ```high``` i.e. any value between ```low``` and ```high``` has an equal probability of being selected
 
 ```hp.quniform(label, low, high, q)```
-returns the value ```Returns a value like round(uniform(low, high) / q) * q```
+
+- returns a quantized value of ```hp.uniform``` i.e. ```round(uniform(low, high) / q) * q```
 
 ```hp.loguniform(label, low, high)```
-Returns a value drawn according to ```exp(uniform(low, high))``` so that the logarithm of the return value is uniformly distributed.
+
+- Returns a value ```exp(uniform(low, high))``` so the logarithm of the return value is uniformly distributed.
 
 ```hp.qloguniform(label, low, high, q)```
-Returns a value like """round(exp(uniform(low, high)) / q) * q"""
+
+- Returns a value """round(exp(uniform(low, high)) / q) * q"""
 
 ```hp.normal(label, mu, sigma)```
-Returns a real number that's normally-distributed with mean mu and standard deviation sigma
+
+- Returns a real number that's normally-distributed with mean mu and standard deviation sigma
 
 ```hp.qnormal(label, mu, sigma, q)```
-Returns the value ```round(normal(mu, sigma) / q) * q```
+
+- Returns a value ```round(normal(mu, sigma) / q) * q```
 
 ```hp.lognormal(label, mu, sigma)```
-Returns a value ```exp(normal(mu, sigma))```
+
+- Returns a value ```exp(normal(mu, sigma))```
 
 ```hp.qlognormal(label, mu, sigma, q)```
-Returns value ```round(exp(normal(mu, sigma)) / q) * q```
+
+- Returns a value ```round(exp(normal(mu, sigma)) / q) * q```
 
 
 # License
