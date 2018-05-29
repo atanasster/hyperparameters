@@ -57,11 +57,11 @@ describe('normal test.', () => {
 });
 
 describe('qnormal test.', () => {
-  it('should be between within 3 standard deviations of mean', () => {
-    const mu = 0;
+  it('should be between 0 and 1', () => {
+    const mu = -1;
     const sigma = 1;
     const val  = hp.qnormal('qnormal', mu, sigma, 0.1);
-    assert(val >= mu - (3*sigma) && val <= mu + (3*sigma), 'Value not in range :(');
+    assert(val >= mu - sigma && val <= mu + sigma, 'Value not in range :(');
   });
 });
 

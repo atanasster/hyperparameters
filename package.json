@@ -32,9 +32,17 @@
     "javascript"
   ],
   "contributors": [
-    { "name": "Atanas Stoyanov", "email" : "atanasster@gmail.com", "url": "https://github.com/atanasster" },
-    { "name": "Martin Stoyanov", "email" : "martin.a.stoyanov@gmail.com", "url": "https://github.com/martin-stoyanov" }
-   ],
+    {
+      "name": "Atanas Stoyanov",
+      "email": "atanasster@gmail.com",
+      "url": "https://github.com/atanasster"
+    },
+    {
+      "name": "Martin Stoyanov",
+      "email": "martin.a.stoyanov@gmail.com",
+      "url": "https://github.com/martin-stoyanov"
+    }
+  ],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/atanasster/hyperjs/issues"
