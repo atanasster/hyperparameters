@@ -49,7 +49,7 @@ Just clone this repo and remove `.git` folder.
 
 ```hp.qloguniform(label, low, high, q)```
 
-- Returns a value """round(exp(uniform(low, high)) / q) * q"""
+- Returns a value ```round(exp(uniform(low, high)) / q) * q```
 
 ```hp.normal(label, mu, sigma)```
 
