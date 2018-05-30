@@ -16,7 +16,7 @@ describe('choice.', () => {
   });
   it('is one of the elements', () => {
     const val = seededSample(hp.choice('choice', ['cat', 'dog']));
-    assert(val==='cat', 'val was actually ' + val);
+    assert(val==='dog', 'val was actually ' + val);
   });
 });
 
