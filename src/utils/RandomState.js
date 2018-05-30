@@ -19,7 +19,7 @@ export default class RandomState {
     this.mt = new Array(this.N); /* the array for the state vector */
     this.mti = this.N + 1; /* mti==N+1 means mt[N] is not initialized */
 
-    this.initGen(seed);
+    this.initGen(this.seed);
   }
 
   /* initializes mt[N] with a seed */
