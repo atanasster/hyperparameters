@@ -48,8 +48,8 @@ export default class RandomState {
     if (this.mti >= this.N) { /* generate N words at one time */
       let kk;
 
-      if (this.mti === this.N + 1) { /* if init_genrand() has not been called, */
-        this.init_genrand(5489);
+      if (this.mti === this.N + 1) { /* if initGen() has not been called, */
+        this.initGen(5489);
       } /* a default initial seed is used */
 
       for (kk = 0; kk < this.N - this.M; kk += 1) {
@@ -89,13 +89,14 @@ export default class RandomState {
   randbelow(upperBound) {
     const lg = x => (Math.LOG2E * Math.log(x + 1e-10)) >> 0;
     if (upperBound <= 0x100000000) {
-      let r;
+      let r = upperBound;
       const bits = this.bits[upperBound] ||
         (this.bits[upperBound] = (lg(upperBound - 1)) + 1); // memoize values for `bits`
-      while (true) {
+      while (r >= upperBound) {
         r = this.randint() >>> (32 - bits);
-        if (r < 0) { r += POW_32; }
-        if (r < upperBound) { break; }
+        if (r < 0) {
+          r += POW_32;
+        }
       }
       return r;
     }
