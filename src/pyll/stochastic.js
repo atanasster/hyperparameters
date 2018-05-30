@@ -5,7 +5,15 @@ export class Choice extends BaseSymbol {
   eval(rng) {
     const { options } = this.params;
     const idx = rng.randrange(0, options.length, 1);
-    return options[idx];
+    const option = options[idx];
+    if (!Array.isArray(option)) {
+      return option;
+    }
+    if (option.length !== 2) {
+      throw new Error('Array of choice options must consist of label and value');
+    }
+    const value = option[1];
+    return typeof value.eval === 'function' ? value.eval(rng) : value;
   }
 }
 
