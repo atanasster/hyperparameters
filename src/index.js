@@ -1,7 +1,5 @@
-import RandomState from './utils/RandomState';
 import { Choice, Randint, Uniform, QUniform, LogUniform, QLogUniform, Normal, QNormal, LogNormal, QLogNormal } from './pyll/stochastic';
 
-export const random = new RandomState();
 
 const HyperoptJS = {
   choice: (label, options) => new Choice(label, { options }),
