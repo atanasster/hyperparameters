@@ -89,10 +89,16 @@ describe('qnormal test.', () => {
 
 describe('lognormal test.', () => {
   it('should be positive', () => {
-    const mu = -1;
+    const mu = 0;
     const sigma = 1;
     const val  = hp.lognormal('lognormal', mu, sigma);
     assert(val >= 0, 'Value not in range :(. val was actually' + val);
+  });
+  it('should be less ~e^3 from the mean, or less than ~3 standard deviations from it', () => {
+    const mu = 0;
+    const sigma = 1;
+    const val  = hp.lognormal('lognormal', mu, sigma);
+    assert(val <= 50, 'Value not in range :(. val was actually' + val);
   });
 });
 
@@ -102,5 +108,11 @@ describe('qlognormal test.', () => {
     const sigma = 1;
     const val  = hp.qlognormal('qlognormal', mu, sigma, .1);
     assert(val >= 0, 'Value not in range :(. val was actually' + val);
+  });
+  it('should be less ~e^3 from the mean, or less than ~3 standard deviations from it', () => {
+    const mu = 0;
+    const sigma = 1;
+    const val  = hp.qlognormal('qlognormal', mu, sigma, .1);
+    assert(val <= 50, 'Value not in range :(. val was actually' + val);
   });
 });
