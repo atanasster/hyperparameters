@@ -1,23 +1,19 @@
-import { Random } from './random';
+import RandomState from './utils/RandomState';
+import { Choice, Randint, Uniform, QUniform, LogUniform, QLogUniform, Normal, QNormal, LogNormal, QLogNormal } from './pyll/stochastic';
 
-export const random = new Random();
+export const random = new RandomState();
 
 const HyperoptJS = {
-  choice: (label, options) => {
-    const idx = random.randrange(0, options.length, 1);
-    return options[idx];
-  },
-  // Return random integer in range [a, b], including both end points.
-  randint: (label, upper) => random.randrange(0, upper, 1),
-  uniform: (label, low, high) => random.uniform(low, high),
-  quniform: (label, low, high, q) => Math.round(random.uniform(low, high) / q) * q,
-  loguniform: (label, low, high) => Math.exp(random.uniform(low, high)),
-  qloguniform: (label, low, high, q) => Math.round(Math.exp(random.uniform(low, high)) / q) * q,
-  normal: (label, mu, sigma) => random.normalvariate(mu, sigma),
-  qnormal: (label, mu, sigma, q) => Math.round(random.normalvariate(mu, sigma) / q) * q,
-  lognormal: (label, mu, sigma) => Math.exp(random.normalvariate(mu, sigma)),
-  qlognormal: (label, mu, sigma, q) =>
-    Math.round(Math.exp(random.normalvariate(mu, sigma)) / q) * q,
+  choice: (label, options) => new Choice(label, { options }),
+  randint: (label, upper) => new Randint(label, { upper }),
+  uniform: (label, low, high) => new Uniform(label, { low, high }),
+  quniform: (label, low, high, q) => new QUniform(label, { low, high, q }),
+  loguniform: (label, low, high) => new LogUniform(label, { low, high }),
+  qloguniform: (label, low, high, q) => new QLogUniform(label, { low, high, q }),
+  normal: (label, mu, sigma) => new Normal(label, { mu, sigma }),
+  qnormal: (label, mu, sigma, q) => new QNormal(label, { mu, sigma, q }),
+  lognormal: (label, mu, sigma) => new LogNormal(label, { mu, sigma }),
+  qlognormal: (label, mu, sigma, q) => new QLogNormal(label, { mu, sigma, q }),
 };
 export default HyperoptJS;
 
