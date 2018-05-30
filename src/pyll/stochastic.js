@@ -19,7 +19,7 @@ export class Choice extends BaseSymbol {
 
 export class Randint extends BaseSymbol {
   eval(rng) {
-    return rng.randrange(0, this.params.upper, 1)
+    return rng.randrange(0, this.params.upper, 1);
   }
 }
 
