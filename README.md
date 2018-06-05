@@ -25,7 +25,7 @@
     import hp from 'hyperparameters';
   ```
 
-###`hp.choice(label, options)`
+###hp.choice(label, options)
 
 - Randomly returns one of the options
 
