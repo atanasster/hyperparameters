@@ -71,13 +71,13 @@ export const MultipleChoicesSpace = () => {
   const space = {
     x: hp.normal('x', 0, 2),
     y: hp.uniform('y', 0, 1),
-    use_float_param_or_not: hp.choice('use_float_param_or_not', [
+    choice: hp.choice('choice', [
       undefined, hp.uniform('float', 0, 1),
     ]),
-    my_abc_other_params_list: [
+    array: [
       hp.normal('a', 0, 2), hp.uniform('b', 0, 3), hp.choice('c', [false, true]),
     ],
-    yet_another_dict_recursive: {
+    obj: {
       u: hp.uniform('u', 0, 3),
       v: hp.uniform('v', 0, 3),
       w: hp.uniform('w', -3, 0)
