@@ -5,14 +5,12 @@ import { sample } from '../src/pyll/stochastic';
 import RandomState from '../src/utils/RandomState';
 
 
-export const printRandomInt = () => {
+export const RandomInt = () => {
   const rng = new RandomState(12345);
-  for (let i = 0; i < 10; i += 1) {
-    console.log(sample(hp.randint('randint', 5), { rng }));
-  }
+  return sample(hp.randint('randint', 5), { rng });
 };
 
-export const ChoiceSpace = () => {
+export const ChoiceSpace = async () => {
   const space = hp.choice(
     'a',
     [
@@ -20,11 +18,11 @@ export const ChoiceSpace = () => {
       hp.uniform('c2', -10, 10)
     ]
   );
-  const opt = ({ c1, c2 }) => (c1 !== undefined ? c1 ** 2 : c2 ** 2);
-  return fmin(opt, space, suggest, 100);
+  const opt = (c1, c2) => (c1 !== undefined ? c1 ** 2 : c2 ** 2);
+  return fmin(opt, space, suggest, 100, { rng: new RandomState(123456) });
 };
 
-export const DLSpaceFMin = () => {
+export const DLSpaceFMin = async () => {
   const space = {
   // Learning rate should be between 0.00001 and 1
     learning_rate:
@@ -49,14 +47,14 @@ export const DLSpaceFMin = () => {
 };
 
 
-export const OptFunctionFMin = () => {
+export const OptFunctionFMin = async () => {
   const opt = x => ((x ** 2) - (x + 1));
 
   return fmin(opt, hp.uniform('x', -5, 5), suggest, 1000);
 };
 
 
-export const HyperParameterFMin = () => {
+export const HyperParameterFMin = async () => {
   const space = {
     x: hp.uniform('x', -5, 5),
     y: hp.uniform('y', -5, 5)
@@ -88,5 +86,7 @@ export const MultipleChoicesSpace = () => {
 };
 
 for (let i = 0; i < 10; i += 1) {
-  console.log(MultipleChoicesSpace());
+  ChoiceSpace()
+    .then(result => console.log(result))
+    .catch(e => console.error(e));
 }

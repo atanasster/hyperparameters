@@ -22,7 +22,7 @@ class FMinIter {
     this.max_evals = max_evals;
     this.rng = rng;
   }
-  serial_evaluate(N = -1) {
+  async serial_evaluate(N = -1) {
     let n = N;
     for (let i = 0; i < this.trials.dynamicTrials.length; i += 1) {
       const trial = this.trials.dynamicTrials[i];
@@ -32,7 +32,7 @@ class FMinIter {
         trial.book_time = now;
         trial.refresh_time = now;
         try {
-          const result = this.domain.evaluate(trial.args);
+          const result = await this.domain.evaluate(trial.args);
           trial.state = JOB_STATE_DONE;
           trial.result = result;
           trial.refresh_time = getTimeStatmp();
@@ -54,7 +54,7 @@ class FMinIter {
     this.trials.refresh();
   }
 
-  run = (N) => {
+  run = async (N) => {
     const { trials, algo } = this;
     let n_queued = 0;
 
@@ -82,7 +82,7 @@ class FMinIter {
           break;
         }
       }
-      this.serial_evaluate();
+      await this.serial_evaluate();
       if (stopped) {
         break;
       }
@@ -94,15 +94,15 @@ class FMinIter {
     }
   };
 
-  exhaust = () => {
+  exhaust = async () => {
     const n_done = this.trials.length;
-    this.run(this.max_evals - n_done);
+    await this.run(this.max_evals - n_done);
     this.trials.refresh();
     return this;
   }
 }
 
-export default (fn, space, algo, max_evals, params = {}) => {
+export default async (fn, space, algo, max_evals, params = {}) => {
   const {
     trials: defTrials, rng: rngDefault,
     catch_eval_exceptions = false,
@@ -129,7 +129,7 @@ export default (fn, space, algo, max_evals, params = {}) => {
     { max_evals, rng }
   );
   rval.catch_eval_exceptions = catch_eval_exceptions;
-  rval.exhaust();
+  await rval.exhaust();
   if (return_argmin) {
     return trials.argmin;
   }

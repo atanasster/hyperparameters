@@ -198,8 +198,8 @@ export class Domain {
     this.name = name;
   }
 
-  evaluate = (args) => {
-    const rval = this.fn(args);
+  evaluate = async (args) => {
+    const rval = await this.fn(args);
     let result;
     if (!Number.isNaN(rval)) {
       result = { loss: rval, status: STATUS_OK };

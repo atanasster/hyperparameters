@@ -7,7 +7,7 @@ import { suggest as randSuggest } from '../src/rand';
 
 chai.use(snapshots(__filename));
 const seededSample = (space) => sample(space, { rng: new RandomState(12345) });
-const randFMinSeeded = (opt, space) => fmin(opt, space, randSuggest, 100, { rng: new RandomState(12345) });
+const randFMinSeeded = async (opt, space) => await fmin(opt, space, randSuggest, 100, { rng: new RandomState(12345) });
 
 
 describe('hp.choice.', () => {
@@ -215,20 +215,20 @@ describe('hp.qlognormal.', () => {
 });
 
 describe('fmin + rand', () => {
-  it('FMin for x^2 - x + 1', () => {
+  it('FMin for x^2 - x + 1', async () => {
     const space = hp.uniform('x', -5, 5);
     const opt = x => ((x ** 2) - (x + 1));
-    assert.snapshot('FMin for x^2 - x + 1', randFMinSeeded(opt, space));
+    assert.snapshot('FMin for x^2 - x + 1', await randFMinSeeded(opt, space));
   });
-  it('Hyperparameters space', () => {
+  it('Hyperparameters space', async () => {
     const space = {
       x: hp.uniform('x', -5, 5),
       y: hp.uniform('y', -5, 5)
     };
     const opt = ({ x, y }) => ((x ** 2) + (y ** 2));
-    assert.snapshot('Hyperparameters space', randFMinSeeded(opt, space));
+    assert.snapshot('Hyperparameters space', await randFMinSeeded(opt, space));
   });
-  it('Choice selection of expressions', () => {
+  it('Choice selection of expressions', async () => {
     const space = hp.choice('a',
       [
         hp.lognormal('c1', 0, 1),
@@ -236,9 +236,9 @@ describe('fmin + rand', () => {
       ]
     );
     const opt = ( x ) => (x ** 2);
-    assert.snapshot('Choice array', randFMinSeeded(opt, space));
+    assert.snapshot('Choice array', await randFMinSeeded(opt, space));
   });
-  it('Deep learning space', () => {
+  it('Deep learning space', async () => {
     const space = {
       // Learning rate should be between 0.00001 and 1
       learning_rate:
@@ -259,7 +259,7 @@ describe('fmin + rand', () => {
 
     const opt = params => params.learning_rate ** 2;
 
-    assert.snapshot('Deep learning space', randFMinSeeded(opt, space));
+    assert.snapshot('Deep learning space', await randFMinSeeded(opt, space));
   });
 });
 

@@ -36,4 +36,5 @@ const space = {
 // loss calculation function
 const opt = params => params.learning_rate ** 2;
 
-console.log(fmin(opt, space, suggest, 100, { rng: new RandomState(123456) }));
+fmin(opt, space, suggest, 100, { rng: new RandomState(123456) })
+  .then(result => console.log(result));
