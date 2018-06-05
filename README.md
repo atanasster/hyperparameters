@@ -29,39 +29,39 @@
 
 - Randomly returns one of the options
 
-###`hp.randint(label, upper)`
+### hp.randint(label, upper)
 
 - Return a random integer in the range [0, upper)
 
-###`hp.uniform(label, low, high)`
+### hp.uniform(label, low, high)
 
 - Returns a single value uniformly between `low` and `high` i.e. any value between `low` and `high` has an equal probability of being selected
 
-###`hp.quniform(label, low, high, q)`
+### hp.quniform(label, low, high, q)
 
 - returns a quantized value of `hp.uniform` calculated as `round(uniform(low, high) / q) * q`
 
-###`hp.loguniform(label, low, high)`
+### hp.loguniform(label, low, high)
 
 - Returns a value `exp(uniform(low, high))` so the logarithm of the return value is uniformly distributed.
 
-###`hp.qloguniform(label, low, high, q)`
+### hp.qloguniform(label, low, high, q)
 
 - Returns a value `round(exp(uniform(low, high)) / q) * q`
 
-###`hp.normal(label, mu, sigma)`
+### hp.normal(label, mu, sigma)
 
 - Returns a real number that's normally-distributed with mean mu and standard deviation sigma
 
-###`hp.qnormal(label, mu, sigma, q)`
+### hp.qnormal(label, mu, sigma, q)
 
 - Returns a value `round(normal(mu, sigma) / q) * q`
 
-###`hp.lognormal(label, mu, sigma)`
+### hp.lognormal(label, mu, sigma)
 
 - Returns a value `exp(normal(mu, sigma))`
 
-###`hp.qlognormal(label, mu, sigma, q)`
+### hp.qlognormal(label, mu, sigma, q)
 
 - Returns a value `round(exp(normal(mu, sigma)) / q) * q`
 

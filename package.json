@@ -1,6 +1,6 @@
 {
   "name": "hyperparameters",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "description": "ES6 hyperparameters search, compatible with hyperopt",
   "main": "./lib/index.js",
   "scripts": {
