@@ -3,10 +3,11 @@ import snapshots from 'chai-snapshot-tests';
 import hp, { fmin } from '../src';
 import RandomState from '../src/utils/RandomState';
 import { sample } from '../src/pyll/stochastic';
-import { suggest } from '../src/rand';
+import { suggest as randSuggest } from '../src/rand';
 
 chai.use(snapshots(__filename));
 const seededSample = (space) => sample(space, { rng: new RandomState(12345) });
+const randFMinSeeded = (opt, space) => fmin(opt, space, randSuggest, 100, { rng: new RandomState(12345) });
 
 
 describe('hp.choice.', () => {
@@ -22,14 +23,15 @@ describe('hp.choice.', () => {
     const val = seededSample(hp.choice('numbers', [1, 2, 3, 4]));
     assert(val===4, 'val was actually: ' + val);
   });
-  const space2 = hp.choice('a',
-    [
-      hp.lognormal('c1', 0, 1),
-      hp.uniform('c2', -10, 10)
-    ]
-  );
   it('Choice selection of expressions', () => {
-    assert.snapshot('Choice array', fmin(({ a: { c1, c2 } }) => (c1 !== undefined ? c1 ** 2 : c2 ** 3), space2, suggest, 10, { rng: new RandomState(123456) }));
+    const space = hp.choice('a',
+      [
+        hp.lognormal('c1', 0, 1),
+        hp.uniform('c2', -10, 10)
+      ]
+    );
+
+    assert.snapshot('choice: array', seededSample(space));
   });
 });
 
@@ -211,3 +213,53 @@ describe('hp.qlognormal.', () => {
     assert.snapshot('qlognormal 1, 1, 0.001', seededSample(hp.qlognormal('qlognormal', 1, 1, 0.001)));
   });
 });
+
+describe('fmin + rand', () => {
+  it('FMin for x^2 - x + 1', () => {
+    const space = hp.uniform('x', -5, 5);
+    const opt = ({ x }) => ((x ** 2) - (x + 1));
+    assert.snapshot('FMin for x^2 - x + 1', randFMinSeeded(opt, space));
+  });
+  it('Hyperparameters space', () => {
+    const space = {
+      x: hp.uniform('x', -5, 5),
+      y: hp.uniform('y', -5, 5)
+    };
+    const opt = ({ x, y }) => ((x ** 2) + (y ** 2));
+    assert.snapshot('Hyperparameters space', randFMinSeeded(opt, space));
+  });
+  it('Choice selection of expressions', () => {
+    const space = hp.choice('a',
+      [
+        hp.lognormal('c1', 0, 1),
+        hp.uniform('c2', -10, 10)
+      ]
+    );
+    const opt = ({ a: { c1, c2 } }) => (c1 !== undefined ? c1 ** 2 : c2 ** 3);
+    assert.snapshot('Choice array', randFMinSeeded(opt, space));
+  });
+  it('Deep learning space', () => {
+    const space = {
+      // Learning rate should be between 0.00001 and 1
+      learning_rate:
+        hp.loguniform('learning_rate', Math.log(1e-5), Math.log(1)),
+      use_double_q_learning:
+        hp.choice('use_double_q_learning', [true, false]),
+      layer1_size: hp.quniform('layer1_size', 10, 100, 1),
+      layer2_size: hp.quniform('layer2_size', 10, 100, 1),
+      layer3_size: hp.quniform('layer3_size', 10, 100, 1),
+      future_discount_max: hp.uniform('future_discount_max', 0.5, 0.99),
+      future_discount_increment:
+        hp.loguniform('future_discount_increment', Math.log(0.001), Math.log(0.1)),
+      recall_memory_size: hp.quniform('recall_memory_size', 1, 100, 1),
+      recall_memory_num_experiences_per_recall:
+        hp.quniform('recall_memory_num_experiences_per_recall', 10, 2000, 1),
+      num_epochs: hp.quniform('num_epochs', 1, 10, 1),
+    };
+
+    const opt = params => params.learning_rate ** 2;
+
+    assert.snapshot('Deep learning space', randFMinSeeded(opt, space));
+  });
+});
+

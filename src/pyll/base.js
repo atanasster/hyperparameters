@@ -18,6 +18,9 @@ export const expressionEval = (expr, params) => {
   if (!rng) {
     rng = new RandomState();
   }
+  if (expr === undefined) {
+    return expr;
+  }
   if (typeof expr.eval !== 'function') {
     if (Array.isArray(expr) && expr.length === 2) {
       return { [expr[0]]: expressionEval(expr[1], params) };

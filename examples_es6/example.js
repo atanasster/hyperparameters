@@ -12,7 +12,7 @@ export const printRandomInt = () => {
   }
 };
 
-export const printChoiceSpace = () => {
+export const ChoiceSpace = () => {
   const space = hp.choice(
     'a',
     [
@@ -21,10 +21,10 @@ export const printChoiceSpace = () => {
     ]
   );
   const opt = ({ a: { c1, c2 } }) => (c1 !== undefined ? c1 ** 2 : c2 ** 2);
-  console.log(fmin(opt, space, suggest, 10, { rng: new RandomState(123456) }));
+  return fmin(opt, space, suggest, 10, { rng: new RandomState(123456) });
 };
 
-export const printDLSpace = () => {
+export const DLSpaceFMin = () => {
   const space = {
   // Learning rate should be between 0.00001 and 1
     learning_rate:
@@ -45,7 +45,43 @@ export const printDLSpace = () => {
 
   const opt = params => params.learning_rate ** 2;
 
-  console.log(fmin(opt, space, suggest, 100, { rng: new RandomState(123456) }));
+  return fmin(opt, space, suggest, 100, { rng: new RandomState(123456) });
 };
 
-printDLSpace()
+
+export const OptFunctionFMin = () => {
+  const opt = ({ x }) => ((x ** 2) - (x + 1));
+
+  return fmin(opt, hp.uniform('x', -5, 5), suggest, 1000);
+};
+
+
+export const HyperParameterFMin = () => {
+  const space = {
+    x: hp.uniform('x', -5, 5),
+    y: hp.uniform('y', -5, 5)
+  };
+  const opt = ({ x, y }) => ((x ** 2) + (y ** 2));
+
+  return fmin(opt, space, suggest, 1000);
+};
+
+
+export const MultipleChoicesSpace = () => {
+  const space = {
+    my_abc_other_params_list: [
+      hp.normal('a', 0, 2), hp.uniform('b', 0, 3), hp.choice('c', [false, true]),
+    ],
+    yet_another_dict_recursive: {
+      u: hp.uniform('u', 0, 3),
+      v: hp.uniform('v', 0, 3),
+      w: hp.uniform('w', -3, 0)
+    }
+  };
+
+  return sample(space);
+};
+
+for (let i = 0; i < 10; i += 1) {
+  console.log(MultipleChoicesSpace());
+}

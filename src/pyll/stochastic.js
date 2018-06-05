@@ -75,7 +75,10 @@ export class QLogNormal extends BaseSymbol {
 
 export const sample = (space, params = {}) => {
   const args = expressionEval(space, params);
-  const results = Object.keys(args).map(key => args[key]);
-  return results.length === 1 ? results[0] : results;
+  if (Object.keys(args).length === 1) {
+    const results = Object.keys(args).map(key => args[key]);
+    return results.length === 1 ? results[0] : results;
+  }
+  return args;
 };
 
