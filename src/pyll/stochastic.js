@@ -1,19 +1,12 @@
-import BaseSymbol from './base';
-import RandomState from '../utils/RandomState';
+import BaseSymbol, { expressionEval } from './base';
 
 export class Choice extends BaseSymbol {
   eval(rng) {
     const { options } = this.params;
     const idx = rng.randrange(0, options.length, 1);
     const option = options[idx];
-    if (!Array.isArray(option)) {
-      return option;
-    }
-    if (option.length !== 2) {
-      throw new Error('Array of choice options must consist of label and value');
-    }
-    const value = option[1];
-    return typeof value.eval === 'function' ? value.eval(rng) : value;
+    const arg = expressionEval(option, { rng });
+    return arg;
   }
 }
 
@@ -81,10 +74,8 @@ export class QLogNormal extends BaseSymbol {
 
 
 export const sample = (space, params = {}) => {
-  let { rng } = params;
-  if (!rng) {
-    rng = new RandomState();
-  }
-  return space.eval(rng);
+  const args = expressionEval(space, params);
+  const results = Object.keys(args).map(key => args[key]);
+  return results.length === 1 ? results[0] : results;
 };
 

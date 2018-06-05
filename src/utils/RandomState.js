@@ -87,6 +87,9 @@ export default class RandomState {
   }
 
   randbelow(upperBound) {
+    if (upperBound <= 0) {
+      return 0;
+    }
     const lg = x => (Math.LOG2E * Math.log(x + 1e-10)) >> 0;
     if (upperBound <= 0x100000000) {
       let r = upperBound;

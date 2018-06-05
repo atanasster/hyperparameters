@@ -1,5 +1,7 @@
 import { Choice, Randint, Uniform, QUniform, LogUniform, QLogUniform, Normal, QNormal, LogNormal, QLogNormal } from './pyll/stochastic';
+import fmin from './fmin';
 
+export { fmin };
 
 const HyperoptJS = {
   choice: (label, options) => new Choice(label, { options }),
