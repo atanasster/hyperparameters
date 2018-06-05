@@ -217,7 +217,7 @@ describe('hp.qlognormal.', () => {
 describe('fmin + rand', () => {
   it('FMin for x^2 - x + 1', () => {
     const space = hp.uniform('x', -5, 5);
-    const opt = ({ x }) => ((x ** 2) - (x + 1));
+    const opt = x => ((x ** 2) - (x + 1));
     assert.snapshot('FMin for x^2 - x + 1', randFMinSeeded(opt, space));
   });
   it('Hyperparameters space', () => {
@@ -235,7 +235,7 @@ describe('fmin + rand', () => {
         hp.uniform('c2', -10, 10)
       ]
     );
-    const opt = ({ a: { c1, c2 } }) => (c1 !== undefined ? c1 ** 2 : c2 ** 3);
+    const opt = ( x ) => (x ** 2);
     assert.snapshot('Choice array', randFMinSeeded(opt, space));
   });
   it('Deep learning space', () => {

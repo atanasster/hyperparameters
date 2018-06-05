@@ -20,8 +20,8 @@ export const ChoiceSpace = () => {
       hp.uniform('c2', -10, 10)
     ]
   );
-  const opt = ({ a: { c1, c2 } }) => (c1 !== undefined ? c1 ** 2 : c2 ** 2);
-  return fmin(opt, space, suggest, 10, { rng: new RandomState(123456) });
+  const opt = ({ c1, c2 }) => (c1 !== undefined ? c1 ** 2 : c2 ** 2);
+  return fmin(opt, space, suggest, 100);
 };
 
 export const DLSpaceFMin = () => {
@@ -50,7 +50,7 @@ export const DLSpaceFMin = () => {
 
 
 export const OptFunctionFMin = () => {
-  const opt = ({ x }) => ((x ** 2) - (x + 1));
+  const opt = x => ((x ** 2) - (x + 1));
 
   return fmin(opt, hp.uniform('x', -5, 5), suggest, 1000);
 };
@@ -69,6 +69,11 @@ export const HyperParameterFMin = () => {
 
 export const MultipleChoicesSpace = () => {
   const space = {
+    x: hp.normal('x', 0, 2),
+    y: hp.uniform('y', 0, 1),
+    use_float_param_or_not: hp.choice('use_float_param_or_not', [
+      undefined, hp.uniform('float', 0, 1),
+    ]),
     my_abc_other_params_list: [
       hp.normal('a', 0, 2), hp.uniform('b', 0, 3), hp.choice('c', [false, true]),
     ],

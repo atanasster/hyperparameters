@@ -13,8 +13,8 @@ export default class BaseSymbol {
     throw new NotImplementedError(this.params);
   }
 }
-export const expressionEval = (expr, params) => {
-  let { rng } = params;
+export const expressionEval = (expr, { rng: rState }) => {
+  let rng = rState;
   if (!rng) {
     rng = new RandomState();
   }
@@ -22,14 +22,14 @@ export const expressionEval = (expr, params) => {
     return expr;
   }
   if (typeof expr.eval !== 'function') {
-    if (Array.isArray(expr) && expr.length === 2) {
-      return { [expr[0]]: expressionEval(expr[1], params) };
+    if (Array.isArray(expr)) {
+      return expr.map(item => expressionEval(item, { rng }));
     }
     if (typeof expr === 'object') {
       return Object.keys(expr)
-        .reduce((r, key) => ({ ...r, ...expressionEval(expr[key], params) }), {});
+        .reduce((r, key) => ({ ...r, [key]: expressionEval(expr[key], { rng }) }), {});
     }
     return expr;
   }
-  return { [expr.label]: expr.eval(rng) };
+  return expr.eval(rng);
 };

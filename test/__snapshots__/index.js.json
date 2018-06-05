@@ -1,7 +1,5 @@
 {
-  "choice: array": {
-    "c2": -3.6724888806975553
-  },
+  "choice: array": -3.6724888806975553,
   "upper: negative": 0,
   "upper: 0": 0,
   "upper: 1": 0,
@@ -54,10 +52,9 @@
   "qlognormal 5, 1, -0.111": 297.702,
   "qlognormal 100, 100, 50": 4.632502881060729e+73,
   "qlognormal 1, 1, 0.001": 5.453,
-  "Choice array": {
-    "a": {
-      "c2": -9.583615210530276
-    }
+  "Hyperparameters space": {
+    "x": -0.7975414827282847,
+    "y": -0.7414790670683917
   },
   "Deep learning space": {
     "learning_rate": 0.000012348977615718016,
@@ -71,11 +68,6 @@
     "recall_memory_num_experiences_per_recall": 1275,
     "num_epochs": 2
   },
-  "FMin for x^2 - x + 1": {
-    "x": 0.46027336612547387
-  },
-  "Hyperparameters space": {
-    "x": -0.7975414827282847,
-    "y": -0.7414790670683917
-  }
+  "FMin for x^2 - x + 1": 0.46027336612547387,
+  "Choice array": 0.11762819827966259
 }
