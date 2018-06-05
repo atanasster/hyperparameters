@@ -32,6 +32,7 @@ class FMinIter {
         trial.book_time = now;
         trial.refresh_time = now;
         try {
+          // eslint-disable-next-line no-await-in-loop
           const result = await this.domain.evaluate(trial.args);
           trial.state = JOB_STATE_DONE;
           trial.result = result;
@@ -82,6 +83,7 @@ class FMinIter {
           break;
         }
       }
+      // eslint-disable-next-line no-await-in-loop
       await this.serial_evaluate();
       if (stopped) {
         break;
