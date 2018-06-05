@@ -125,7 +125,7 @@
 
   const fn = x => ((x ** 2) - (x + 1));
   const space = hp.uniform('x', -5, 5);
-  console.log(fmin(fn, space, suggest, 1000,  rng: new RandomState(123456) }));
+  console.log(fmin(fn, space, suggest, 1000, { rng: new RandomState(123456) }));
   ```
 ## License
 
