@@ -84,13 +84,13 @@
 ## Spaces
 
   ```
-    import { sample } from 'hyperparameters/pyll/stochastic';
+    import { sample } from 'hyperparameters/base/stochastic';
   ```
   
   **example:**
   ```
   import hp from 'hyperparameters';
-  import { sample } from 'hyperparameters/pyll/stochastic';
+  import { sample } from 'hyperparameters/base/stochastic';
   
   const space = {
     x: hp.normal('x', 0, 2),
@@ -120,7 +120,7 @@
   **example:**
   ```
   import hp, { fmin } from 'hyperparameters';
-  import { suggest } from 'hyperparameters/rand';
+  import { suggest } from 'hyperparameters/optimizers/rand';
   import RandomState from 'hyperparameters/utils/RandomState';
 
   const fn = x => ((x ** 2) - (x + 1));

@@ -1,5 +1,5 @@
-import RandomState from './utils/RandomState';
-import { expressionEval } from './pyll/base';
+import RandomState from '../utils/RandomState';
+import { expressionEval } from '../base/base';
 
 // eslint-disable-next-line import/prefer-default-export
 export const suggest = (newIds, domain, trials, seed) => {

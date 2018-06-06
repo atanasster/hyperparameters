@@ -1,8 +1,8 @@
 {
   "name": "hyperparameters",
-  "version": "0.20.2",
+  "version": "0.21.2",
   "description": "ES6 hyperparameters search, compatible with hyperopt",
-  "main": "./lib/index.js",
+  "main": "index.js",
   "scripts": {
     "clean": "rimraf lib",
     "test": "npm run lint && npm run cover",
@@ -13,11 +13,13 @@
     "cover": "istanbul cover _mocha -- --require babel-core/register --require babel-polyfill --recursive",
     "lint": "eslint src test",
     "build": "cross-env BABEL_ENV=production babel src --out-dir lib",
-    "pub": "pushd ./ && npm run clean && npm run lint && npm run test && npm run build && cp package.json ./lib && cp README.md ./lib && cd lib && npm publish && popd"
+    "dist": "cross-env npm run clean && npm run lint && npm run test && npm run build && cp package.json ./lib && cp README.md ./lib",
+    "pub": "pushd ./ && npm run dist && cd ./lib && npm publish && popd"
   },
   "files": [
-    "lib",
-    "src"
+    "base",
+    "optimizers",
+    "utils"
   ],
   "repository": {
     "type": "git",

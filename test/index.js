@@ -2,8 +2,8 @@ import chai, { assert } from 'chai';
 import snapshots from 'chai-snapshot-tests';
 import hp, { fmin } from '../src';
 import RandomState from '../src/utils/RandomState';
-import { sample } from '../src/pyll/stochastic';
-import { suggest as randSuggest } from '../src/rand';
+import { sample } from '../src/base/stochastic';
+import { suggest as randSuggest } from '../src/optimizers/rand';
 
 chai.use(snapshots(__filename));
 const seededSample = (space) => sample(space, { rng: new RandomState(12345) });

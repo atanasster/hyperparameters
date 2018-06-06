@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import RandomState from './utils/RandomState';
+import RandomState from '../utils/RandomState';
 import { Trials, Domain, JOB_STATE_NEW, JOB_STATE_RUNNING, JOB_STATE_ERROR, JOB_STATE_DONE } from './base';
 
 const getTimeStatmp = () => new Date().getTime();

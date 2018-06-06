@@ -1,5 +1,5 @@
-import { Choice, Randint, Uniform, QUniform, LogUniform, QLogUniform, Normal, QNormal, LogNormal, QLogNormal } from './pyll/stochastic';
-import fmin from './fmin';
+import { Choice, Randint, Uniform, QUniform, LogUniform, QLogUniform, Normal, QNormal, LogNormal, QLogNormal } from './base/stochastic';
+import fmin from './base/fmin';
 
 export { fmin };
 
