@@ -21,17 +21,7 @@ describe('hp.choice.', () => {
   });
   it('picks a number', () => {
     const val = seededSample(hp.choice('numbers', [1, 2, 3, 4]));
-    assert(val===4, 'val was actually: ' + val);
-  });
-  it('Choice selection of expressions', () => {
-    const space = hp.choice('a',
-      [
-        hp.lognormal('c1', 0, 1),
-        hp.uniform('c2', -10, 10)
-      ]
-    );
-
-    assert.snapshot('choice: array', seededSample(space));
+    assert(val === 4, 'val was actually: ' + val);
   });
 });
 
@@ -214,6 +204,36 @@ describe('hp.qlognormal.', () => {
   });
 });
 
+describe('sample', () => {
+  it('Choice as array', () => {
+    const space = hp.choice('a',
+      [
+        hp.lognormal('c1', 0, 1),
+        hp.uniform('c2', -10, 10)
+      ]
+    );
+
+    assert.snapshot('sample: array', seededSample(space));
+  });
+  it('more complex space with depth', () => {
+    const space = {
+      x: hp.normal('x', 0, 2),
+      y: hp.uniform('y', 0, 1),
+      choice: hp.choice('choice', [
+        null, hp.uniform('float', 0, 1),
+      ]),
+      array: [
+        hp.normal('a', 0, 2), hp.uniform('b', 0, 3), hp.choice('c', [false, true]),
+      ],
+      obj: {
+        u: hp.uniform('u', 0, 3),
+        v: hp.uniform('v', 0, 3),
+        w: hp.uniform('w', -3, 0)
+      }
+    };
+    assert.snapshot('sample: depth', seededSample(space));
+  });
+});
 describe('fmin + rand', () => {
   it('FMin for x^2 - x + 1', async () => {
     const space = hp.uniform('x', -5, 5);
@@ -236,7 +256,7 @@ describe('fmin + rand', () => {
       ]
     );
     const opt = ( x ) => (x ** 2);
-    assert.snapshot('Choice array', await randFMinSeeded(opt, space));
+    assert.snapshot('choice as array space', await randFMinSeeded(opt, space));
   });
   it('Deep learning space', async () => {
     const space = {

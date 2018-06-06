@@ -82,11 +82,16 @@ export const MultipleChoicesSpace = () => {
     }
   };
 
-  return sample(space);
+  return sample(space, { rng: new RandomState(12345) });
 };
 
 for (let i = 0; i < 10; i += 1) {
-  ChoiceSpace()
-    .then(result => console.log(result))
-    .catch(e => console.error(e));
+  console.log(MultipleChoicesSpace());
 }
+/*
+  for (let i = 0; i < 10; i += 1) {
+    ChoiceSpace()
+      .then(result => console.log(result))
+      .catch(e => console.error(e));
+  }
+*/

@@ -18,7 +18,7 @@ export const expressionEval = (expr, { rng: rState }) => {
   if (!rng) {
     rng = new RandomState();
   }
-  if (expr === undefined) {
+  if (expr === undefined || expr === null) {
     return expr;
   }
   if (typeof expr.eval !== 'function') {
