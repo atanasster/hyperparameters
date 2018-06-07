@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import hp, { fmin } from '../src';
+import * as tf from '@tensorflow/tfjs';
+import hp, { fmin, STATUS_OK } from '../src';
 import { suggest } from '../src/optimizers/rand';
 import { sample } from '../src/base/stochastic';
 import RandomState from '../src/utils/RandomState';
@@ -85,9 +86,36 @@ export const MultipleChoicesSpace = () => {
   return sample(space, { rng: new RandomState(12345) });
 };
 
-for (let i = 0; i < 10; i += 1) {
-  console.log(MultipleChoicesSpace());
-}
+export const optimizeStarterSample = () => {
+  const modelOpt = async ({ optimizer, epochs }) => {
+    // Create a simple model.
+    const model = tf.sequential();
+    model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+
+    // Prepare the model for training: Specify the loss and the optimizer.
+    model.compile({
+      loss: 'meanSquaredError',
+      optimizer
+    });
+
+    // Generate some synthetic data for training. (y = 2x - 1)
+    const xs = tf.tensor2d([-1, 0, 1, 2, 3, 4], [6, 1]);
+    const ys = tf.tensor2d([-3, -1, 1, 3, 5, 7], [6, 1]);
+    // Train the model using the data.
+    const h = await model.fit(xs, ys, { epochs: epochs + 1 });
+    return { loss: h.history.loss[h.history.loss.length - 1], status: STATUS_OK };
+  };
+  const space = {
+    optimizer: hp.choice('optimizer', ['sgd', 'adam', 'adagrad', 'rmsprop']),
+    epochs: hp.randint('epochs', 250),
+  };
+  return fmin(modelOpt, space, suggest, 10, { rng: new RandomState(12345) });
+};
+
+optimizeStarterSample()
+  .then(result => console.log(result))
+  .catch(e => console.error(e));
+
 /*
   for (let i = 0; i < 10; i += 1) {
     ChoiceSpace()

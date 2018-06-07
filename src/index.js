@@ -1,7 +1,12 @@
 import { Choice, Randint, Uniform, QUniform, LogUniform, QLogUniform, Normal, QNormal, LogNormal, QLogNormal } from './base/stochastic';
 import fmin from './base/fmin';
+import { suggest as randSuggest } from './optimizers/rand';
+import RandomState from './utils/RandomState';
 
-export { fmin };
+export * from './base/stochastic';
+export * from './base/base';
+
+export { fmin, RandomState };
 
 const HyperoptJS = {
   choice: (label, options) => new Choice(label, { options }),
@@ -17,3 +22,8 @@ const HyperoptJS = {
 };
 export default HyperoptJS;
 
+export const optimizers = {
+  rand: {
+    suggest: randSuggest,
+  }
+};

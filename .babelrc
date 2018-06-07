@@ -11,6 +11,30 @@
       "plugins": [
         "add-module-exports"
       ]
+    },
+    "commonjs": {
+      "presets": [
+        ["env", {
+          "useBuiltIns": false
+        }]
+        , "stage-0"
+      ],
+      "plugins": [
+        "external-helpers"
+      ]
+
+    },
+    "es": {
+      "presets": [
+        ["env", {
+          "useBuiltIns": false,
+          "modules": false
+        }]
+        , "stage-0"
+      ],
+      "plugins": [
+        "external-helpers"
+      ]
     }
   }
 }
