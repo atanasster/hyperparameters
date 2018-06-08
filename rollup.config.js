@@ -18,7 +18,7 @@ if (env === 'es' || env === 'cjs') {
 }
 
 if (env === 'development' || env === 'production') {
-  config.output = { format: 'umd', name: 'HyperParameters', indent: false };
+  config.output = { format: 'umd', name: 'hpjs', indent: false };
   config.plugins.push(
     nodeResolve({
       jsnext: true

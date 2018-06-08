@@ -1,5 +1,7 @@
 /* eslint-disable no-bitwise */
-// from: https://gist.github.com/banksean/300494
+// https://gist.github.com/banksean/300494
+// Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
+
 // https://github.com/jrus/random-js/blob/master/random.coffee
 
 const POW_NEG_26 = 2 ** -26;

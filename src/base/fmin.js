@@ -124,7 +124,7 @@ export default async (fn, space, algo, max_evals, params = {}) => {
     trials = defTrials;
   }
 
-  const domain = new Domain(fn, space);
+  const domain = new Domain(fn, space, params);
 
   const rval = new FMinIter(
     algo, domain, trials,

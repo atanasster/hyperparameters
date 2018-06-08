@@ -1,0 +1,31 @@
+<!-- Adaptped from google tensorflow.js tiny exampple, this sample finds the best optimizer and epoch
+hyperparameters for a tiny tensorflow.js example
+-->
+
+
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.7.0"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/hyperparameters@0.22.8/dist/hyperparameters.min.js"> </script>
+  </head>
+  <body>
+    <h4>Tiny TFJS + HPJS example <hr/></h4>
+    <pre>
+      const model = tf.sequential();
+      model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+      model.compile({
+        loss: 'meanSquaredError',
+        optimizer
+      });
+      await model.fit(xs, ys, { epochs });
+    </pre>
+    <h3>Best optimizer:</h3>
+    <div id="optimizer_best"></div>
+    <h3>Epochs:</h3>
+    <div id="epochs"></div>
+
+    <h3>Prediction:</h3>
+    <div id="prediction"></div>
+    <script src="./index.js"> </script>
+  </body>
+</html>

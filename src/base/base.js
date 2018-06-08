@@ -223,19 +223,14 @@ export class Trials {
 }
 
 export class Domain {
-  constructor(
-    fn, expr,
-    {
-      name,
-    } = {}
-  ) {
+  constructor(fn, expr, params) {
     this.fn = fn;
     this.expr = expr;
-    this.name = name;
+    this.params = params;
   }
 
   evaluate = async (args) => {
-    const rval = await this.fn(args);
+    const rval = await this.fn(args, this.params);
     let result;
     if (!Number.isNaN(rval)) {
       result = { loss: rval, status: STATUS_OK };
