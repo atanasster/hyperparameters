@@ -1,34 +1,37 @@
 import nodeResolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
-import { uglify } from 'rollup-plugin-uglify';
+import uglify from 'rollup-plugin-uglify';
 
 const env = process.env.NODE_ENV;
 const config = {
-  output: {
-    name: 'HyperParameters',
-    exports: 'named',
-    format: 'umd'
-  },
-  plugins: [
+  input: 'src/index.js',
+  plugins: []
+};
+
+if (env === 'es' || env === 'cjs') {
+  config.output = { format: env, indent: false };
+  config.external = ['symbol-observable'];
+  config.plugins.push(babel({
+    plugins: ['external-helpers'],
+  }));
+}
+
+if (env === 'development' || env === 'production') {
+  config.output = { format: 'umd', name: 'HyperParameters', indent: false };
+  config.plugins.push(
     nodeResolve({
       jsnext: true
     }),
-    // due to https://github.com/rollup/rollup/wiki/Troubleshooting#name-is-not-exported-by-module
-    commonjs({
-      include: 'node_modules/**',
-      namedExports: { './node_module/invariant.js': ['default'] }
-    }),
     babel({
       exclude: 'node_modules/**',
-      plugins: ['external-helpers']
+      plugins: ['external-helpers'],
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify(env)
     })
-  ]
-};
+  );
+}
 
 if (env === 'production') {
   config.plugins.push(uglify({

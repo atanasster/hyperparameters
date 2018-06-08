@@ -1,39 +1,35 @@
 {
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": [
+            "ie >= 11"
+          ]
+        },
+        "exclude": ["transform-async-to-generator", "transform-regenerator"],
+        "modules": false,
+        "loose": true
+      }
+    ]
+    , "stage-0"
+  ],
+  "plugins": [
+    "transform-object-rest-spread"
+  ],
   "env": {
     "development": {
-      "presets": ["env", "stage-0"],
-      "plugins": [
-        "add-module-exports"
-      ]
-    },
-    "production": {
-      "presets": ["env", "stage-0", "minify"],
-      "plugins": [
-        "add-module-exports"
-      ]
+      "presets": ["env", "stage-0"]
     },
     "commonjs": {
       "presets": [
-        ["env", {
-          "useBuiltIns": false
-        }]
-        , "stage-0"
-      ],
-      "plugins": [
-        "external-helpers"
-      ]
-
-    },
-    "es": {
-      "presets": [
-        ["env", {
-          "useBuiltIns": false,
-          "modules": false
-        }]
-        , "stage-0"
-      ],
-      "plugins": [
-        "external-helpers"
+        [
+          "env",
+          {
+            "loose": true
+          }
+        ]
       ]
     }
   }
