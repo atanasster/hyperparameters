@@ -1,9 +1,5 @@
 /* eslint-disable no-console */
-import * as tf from '@tensorflow/tfjs';
-import hp, { fmin, STATUS_OK } from '../src';
-import { suggest } from '../src/optimizers/rand';
-import { sample } from '../src/base/stochastic';
-import RandomState from '../src/utils/RandomState';
+import hp, { fmin, STATUS_OK, optimizers, sample, RandomState } from '../src';
 
 
 export const RandomInt = () => {
@@ -20,7 +16,7 @@ export const ChoiceSpace = async () => {
     ]
   );
   const opt = (c1, c2) => (c1 !== undefined ? c1 ** 2 : c2 ** 2);
-  return fmin(opt, space, suggest, 100, { rng: new RandomState(123456) });
+  return fmin(opt, space, optimizers.rand.suggest, 100, { rng: new RandomState(123456) });
 };
 
 export const DLSpaceFMin = async () => {
@@ -86,6 +82,7 @@ export const MultipleChoicesSpace = () => {
   return sample(space, { rng: new RandomState(12345) });
 };
 
+/*
 export const optimizeStarterSample = () => {
   const modelOpt = async ({ optimizer, epochs }) => {
     // Create a simple model.
@@ -115,11 +112,11 @@ export const optimizeStarterSample = () => {
 optimizeStarterSample()
   .then(result => console.log(result))
   .catch(e => console.error(e));
-
-/*
-  for (let i = 0; i < 10; i += 1) {
-    ChoiceSpace()
-      .then(result => console.log(result))
-      .catch(e => console.error(e));
-  }
 */
+
+for (let i = 0; i < 10; i += 1) {
+  ChoiceSpace()
+    .then(result => console.log(result))
+    .catch(e => console.error(e));
+}
+

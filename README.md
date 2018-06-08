@@ -70,7 +70,7 @@
 ## Random numbers generator
 
   ```
-    import RandomState from 'hyperparameters/utils/RandomState';
+    import { RandomState } from 'hyperparameters';
   ```
   
   **example:**
@@ -84,13 +84,12 @@
 ## Spaces
 
   ```
-    import { sample } from 'hyperparameters/base/stochastic';
+    import { sample } from 'hyperparameters';
   ```
   
   **example:**
   ```
-  import hp from 'hyperparameters';
-  import { sample } from 'hyperparameters/base/stochastic';
+  import hp, { sample } from 'hyperparameters';
   
   const space = {
     x: hp.normal('x', 0, 2),
@@ -119,13 +118,11 @@
   
   **example:**
   ```
-  import hp, { fmin } from 'hyperparameters';
-  import { suggest } from 'hyperparameters/optimizers/rand';
-  import RandomState from 'hyperparameters/utils/RandomState';
+  import hp, { fmin, RandomState, optimizers  } from 'hyperparameters';
 
   const fn = x => ((x ** 2) - (x + 1));
   const space = hp.uniform('x', -5, 5);
-  fmin(fn, space, suggest, 1000, { rng: new RandomState(123456) })
+  fmin(fn, space, optimizers.rand.suggest, 1000, { rng: new RandomState(123456) })
     .then(result => console.log(result));
   ```
 ## License
