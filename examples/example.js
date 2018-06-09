@@ -40,14 +40,14 @@ export const DLSpaceFMin = async () => {
 
   const opt = params => params.learning_rate ** 2;
 
-  return fmin(opt, space, suggest, 100, { rng: new RandomState(123456) });
+  return fmin(opt, space, optimizers.rand.suggest, 100, { rng: new RandomState(123456) });
 };
 
 
 export const OptFunctionFMin = async () => {
   const opt = x => ((x ** 2) - (x + 1));
 
-  return fmin(opt, hp.uniform('x', -5, 5), suggest, 1000);
+  return fmin(opt, hp.uniform('x', -5, 5), optimizers.rand.suggest, 1000);
 };
 
 
@@ -58,7 +58,7 @@ export const HyperParameterFMin = async () => {
   };
   const opt = ({ x, y }) => ((x ** 2) + (y ** 2));
 
-  return fmin(opt, space, suggest, 1000);
+  return fmin(opt, space, optimizers.rand.suggest, 1000);
 };
 
 
