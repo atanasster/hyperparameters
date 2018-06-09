@@ -206,10 +206,10 @@ export class Trials {
     */
   };
 
-  get bestTrial() {
+  bestTrial(compare = (a, b) => a.loss < b.loss) {
     let best = this.trials[0];
     this.trials.forEach((trial) => {
-      if (trial.result.status === STATUS_OK && trial.result.loss < best.result.loss) {
+      if (trial.result.status === STATUS_OK && compare(trial.result, best.result)) {
         best = trial;
       }
     });
@@ -217,8 +217,13 @@ export class Trials {
   }
 
   get argmin() {
-    const { bestTrial } = this;
-    return bestTrial !== undefined ? bestTrial.args : undefined;
+    const best = this.bestTrial();
+    return best !== undefined ? best.args : undefined;
+  }
+
+  get argmax() {
+    const best = this.bestTrial((a, b) => a.loss > b.loss);
+    return best !== undefined ? best.args : undefined;
   }
 }
 
