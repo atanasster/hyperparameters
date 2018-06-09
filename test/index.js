@@ -7,7 +7,10 @@ import { suggest as randSuggest } from '../src/optimizers/rand';
 
 chai.use(snapshots(__filename));
 const seededSample = (space) => sample(space, { rng: new RandomState(12345) });
-const randFMinSeeded = async (opt, space) => await fmin(opt, space, randSuggest, 100, { rng: new RandomState(12345) });
+const randFMinSeeded = async (opt, space) => {
+  const trials = await fmin(opt, space, randSuggest, 100, { rng: new RandomState(12345) });
+  return trials.argmin;
+}
 
 
 describe('hp.choice.', () => {

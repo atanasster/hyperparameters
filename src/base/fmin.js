@@ -9,12 +9,12 @@ class FMinIter {
     algo, domain, trials,
     {
       rng,
-      catch_eval_exceptions = false,
+      catchExceptions = false,
       max_queue_len = 1,
       max_evals = Number.MAX_VALUE,
     } = {}
   ) {
-    this.catch_eval_exceptions = catch_eval_exceptions;
+    this.catchExceptions = catchExceptions;
     this.algo = algo;
     this.domain = domain;
     this.trials = trials;
@@ -41,7 +41,7 @@ class FMinIter {
           trial.state = JOB_STATE_ERROR;
           trial.error = `${e}, ${e.message}`;
           trial.refresh_time = getTimeStatmp();
-          if (!this.catch_eval_exceptions) {
+          if (!this.catchExceptions) {
             this.trials.refresh();
             throw e;
           }
@@ -107,8 +107,7 @@ class FMinIter {
 export default async (fn, space, algo, max_evals, params = {}) => {
   const {
     trials: defTrials, rng: rngDefault,
-    catch_eval_exceptions = false,
-    return_argmin = true
+    catchExceptions = false,
   } = params;
 
   let rng;
@@ -128,12 +127,8 @@ export default async (fn, space, algo, max_evals, params = {}) => {
 
   const rval = new FMinIter(
     algo, domain, trials,
-    { max_evals, rng }
+    { max_evals, rng, catchExceptions }
   );
-  rval.catch_eval_exceptions = catch_eval_exceptions;
   await rval.exhaust();
-  if (return_argmin) {
-    return trials.argmin;
-  }
   return trials;
 };
