@@ -8,7 +8,7 @@ export const suggest = (newIds, domain, trials, seed) => {
   newIds.forEach((newId) => {
     const paramsEval = expressionEval(domain.expr, { rng });
     const result = domain.newResult();
-    rval = [...rval, ...trials.newTrialDocs([newId], [null], [result], [paramsEval])];
+    rval = [...rval, ...trials.newTrialDocs([newId], [result], [paramsEval])];
   });
   return rval;
 };

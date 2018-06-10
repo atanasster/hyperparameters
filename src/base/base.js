@@ -145,13 +145,12 @@ export class Trials {
     return rval;
   };
 
-  newTrialDocs = (tids, specs, results, args) => {
+  newTrialDocs = (tids, results, args) => {
     const rval = [];
     for (let i = 0; i < tids.length; i += 1) {
       const doc = {
         state: JOB_STATE_NEW,
         tid: tids[i],
-        spec: specs[i],
         result: results[i],
         args: args[i],
       };
