@@ -22,46 +22,46 @@
 ## Parameter Expressions
 
   ```
-    import hp from 'hyperparameters';
+    import * as hpjs from 'hyperparameters';
   ```
 
-### hp.choice(label, options)
+### hpjs.choice(label, options)
 
 - Randomly returns one of the options
 
-### hp.randint(label, upper)
+### hpjs.randint(label, upper)
 
 - Return a random integer in the range [0, upper)
 
-### hp.uniform(label, low, high)
+### hpjs.uniform(label, low, high)
 
 - Returns a single value uniformly between `low` and `high` i.e. any value between `low` and `high` has an equal probability of being selected
 
-### hp.quniform(label, low, high, q)
+### hpjs.quniform(label, low, high, q)
 
 - returns a quantized value of `hp.uniform` calculated as `round(uniform(low, high) / q) * q`
 
-### hp.loguniform(label, low, high)
+### hpjs.loguniform(label, low, high)
 
 - Returns a value `exp(uniform(low, high))` so the logarithm of the return value is uniformly distributed.
 
-### hp.qloguniform(label, low, high, q)
+### hpjs.qloguniform(label, low, high, q)
 
 - Returns a value `round(exp(uniform(low, high)) / q) * q`
 
-### hp.normal(label, mu, sigma)
+### hpjs.normal(label, mu, sigma)
 
 - Returns a real number that's normally-distributed with mean mu and standard deviation sigma
 
-### hp.qnormal(label, mu, sigma, q)
+### hpjs.qnormal(label, mu, sigma, q)
 
 - Returns a value `round(normal(mu, sigma) / q) * q`
 
-### hp.lognormal(label, mu, sigma)
+### hpjs.lognormal(label, mu, sigma)
 
 - Returns a value `exp(normal(mu, sigma))`
 
-### hp.qlognormal(label, mu, sigma, q)
+### hpjs.qlognormal(label, mu, sigma, q)
 
 - Returns a value `round(exp(normal(mu, sigma)) / q) * q`
 
@@ -89,40 +89,41 @@
   
   **example:**
   ```
-  import hp, { sample } from 'hyperparameters';
+  import * as hpjs from 'hyperparameters';
   
   const space = {
-    x: hp.normal('x', 0, 2),
-    y: hp.uniform('y', 0, 1),
-    choice: hp.choice('choice', [
+    x: hpjs.normal('x', 0, 2),
+    y: hpjs.uniform('y', 0, 1),
+    choice: hpjs.choice('choice', [
       undefined, hp.uniform('float', 0, 1),
     ]),
     array: [
-      hp.normal('a', 0, 2), hp.uniform('b', 0, 3), hp.choice('c', [false, true]),
+      hpjs.normal('a', 0, 2), hpjs.uniform('b', 0, 3), hpjs.choice('c', [false, true]),
     ],
     obj: {
-      u: hp.uniform('u', 0, 3),
-      v: hp.uniform('v', 0, 3),
-      w: hp.uniform('w', -3, 0)
+      u: hpjs.uniform('u', 0, 3),
+      v: hpjs.uniform('v', 0, 3),
+      w: hpjs.uniform('w', -3, 0)
     }
   };
 
-  console.log(sample(space));
+  console.log(hpjs.sample(space));
 
   ```
 ## fmin - find best value of a function over the arguments 
 
   ```
-    import { fmin } from 'hyperparameters';
+    import * as hpjs from 'hyperparameters';
+    const trials = hpjs.fmin(optimizationFunction, space, estimator, max_estimates, options); 
   ```
   
   **example:**
   ```
-  import hp, { fmin, RandomState, optimizers  } from 'hyperparameters';
+  import * as hpjs from 'hyperparameters';
 
   const fn = x => ((x ** 2) - (x + 1));
-  const space = hp.uniform('x', -5, 5);
-  fmin(fn, space, optimizers.rand.suggest, 1000, { rng: new RandomState(123456) })
+  const space = hpjs.uniform('x', -5, 5);
+  fmin(fn, space, hpjs.estimators.rand.suggest, 1000, { rng: new hpjs.RandomState(123456) })
     .then(trials => console.log(result.argmin));
   ```
 ## License

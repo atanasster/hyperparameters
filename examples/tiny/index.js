@@ -31,8 +31,8 @@ async function launchHPJS() {
   // optmizer is a choice field
   // epochs ia an integer value from 10 to 250 with a step of 5
   const space = {
-    optimizer: hpjs.default.choice('optimizer', ['sgd', 'adam', 'adagrad', 'rmsprop']),
-    epochs: hpjs.default.quniform('epochs', 50, 250, 50),
+    optimizer: hpjs.choice('optimizer', ['sgd', 'adam', 'adagrad', 'rmsprop']),
+    epochs: hpjs.quniform('epochs', 50, 250, 50),
   };
   // Generate some synthetic data for training. (y = 2x - 1) and pass to fmin as parameters
   // data will be passed as a parameters to the fmin
@@ -40,7 +40,7 @@ async function launchHPJS() {
   const ys = tf.tensor2d([-3, -1, 1, 3, 5, 7], [6, 1]);
 
   const trials = await hpjs.fmin(
-    modelOpt, space, hpjs.optimizers.rand.suggest, 10,
+    modelOpt, space, hpjs.estimators.rand.suggest, 10,
     { rng: new hpjs.RandomState(654321), xs, ys }
   );
   const opt = trials.argmin;

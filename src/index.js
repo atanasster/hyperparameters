@@ -8,21 +8,18 @@ export * from './base/base';
 
 export { fmin, RandomState };
 
-const HyperoptJS = {
-  choice: (label, options) => new Choice(label, { options }),
-  randint: (label, upper) => new Randint(label, { upper }),
-  uniform: (label, low, high) => new Uniform(label, { low, high }),
-  quniform: (label, low, high, q) => new QUniform(label, { low, high, q }),
-  loguniform: (label, low, high) => new LogUniform(label, { low, high }),
-  qloguniform: (label, low, high, q) => new QLogUniform(label, { low, high, q }),
-  normal: (label, mu, sigma) => new Normal(label, { mu, sigma }),
-  qnormal: (label, mu, sigma, q) => new QNormal(label, { mu, sigma, q }),
-  lognormal: (label, mu, sigma) => new LogNormal(label, { mu, sigma }),
-  qlognormal: (label, mu, sigma, q) => new QLogNormal(label, { mu, sigma, q }),
-};
-export default HyperoptJS;
+export const choice = (label, options) => new Choice(label, { options });
+export const randint = (label, upper) => new Randint(label, { upper });
+export const uniform = (label, low, high) => new Uniform(label, { low, high });
+export const quniform = (label, low, high, q) => new QUniform(label, { low, high, q });
+export const loguniform = (label, low, high) => new LogUniform(label, { low, high });
+export const qloguniform = (label, low, high, q) => new QLogUniform(label, { low, high, q });
+export const normal = (label, mu, sigma) => new Normal(label, { mu, sigma });
+export const qnormal = (label, mu, sigma, q) => new QNormal(label, { mu, sigma, q });
+export const lognormal = (label, mu, sigma) => new LogNormal(label, { mu, sigma });
+export const qlognormal = (label, mu, sigma, q) => new QLogNormal(label, { mu, sigma, q });
 
-export const optimizers = {
+export const estimators = {
   rand: {
     suggest: randSuggest,
   }
