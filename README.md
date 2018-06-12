@@ -15,14 +15,14 @@
 ## Installation
 
   ```
-    $ npm install hyperparameters
+  $ npm install hyperparameters
   ```
 
 
 ## Parameter Expressions
 
   ```
-    import * as hpjs from 'hyperparameters';
+  import * as hpjs from 'hyperparameters';
   ```
 
 ### hpjs.choice(label, options)
@@ -70,7 +70,7 @@
 ## Random numbers generator
 
   ```
-    import { RandomState } from 'hyperparameters';
+  import { RandomState } from 'hyperparameters';
   ```
   
   **example:**
@@ -84,7 +84,7 @@
 ## Spaces
 
   ```
-    import { sample } from 'hyperparameters';
+  import { sample } from 'hyperparameters';
   ```
   
   **example:**
@@ -113,8 +113,8 @@
 ## fmin - find best value of a function over the arguments 
 
   ```
-    import * as hpjs from 'hyperparameters';
-    const trials = hpjs.fmin(optimizationFunction, space, estimator, max_estimates, options); 
+  import * as hpjs from 'hyperparameters';
+  const trials = hpjs.fmin(optimizationFunction, space, estimator, max_estimates, options); 
   ```
   
   **example:**
