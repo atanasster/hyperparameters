@@ -236,9 +236,10 @@ export class Domain {
   evaluate = async (args) => {
     const rval = await this.fn(args, this.params);
     let result;
-    if (typeof rval === 'number' && !Number.isNaN(rval) && Number.isFinite(rval)) {
+    if (typeof rval === 'number' && !Number.isNaN(rval)) {
       result = { loss: rval, status: STATUS_OK };
     } else {
+      result = rval;
       if (result === undefined) {
         throw new Error('Optimization function should return a loss value');
       }
