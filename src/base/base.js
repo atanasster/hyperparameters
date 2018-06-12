@@ -236,7 +236,7 @@ export class Domain {
   evaluate = async (args) => {
     const rval = await this.fn(args, this.params);
     let result;
-    if (!Number.isNaN(rval)) {
+    if (typeof rval === 'number' && !Number.isNaN(rval) && Number.isFinite(rval)) {
       result = { loss: rval, status: STATUS_OK };
     } else {
       if (result === undefined) {
