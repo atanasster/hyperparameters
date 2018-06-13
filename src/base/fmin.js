@@ -12,17 +12,20 @@ class FMinIter {
       catchExceptions = false,
       max_queue_len = 1,
       max_evals = Number.MAX_VALUE,
-    } = {}
+    } = {},
+    params = {}
   ) {
     this.catchExceptions = catchExceptions;
     this.algo = algo;
     this.domain = domain;
     this.trials = trials;
+    this.params = params;
     this.max_queue_len = max_queue_len;
     this.max_evals = max_evals;
     this.rng = rng;
   }
   async serial_evaluate(N = -1) {
+    const { onExperimentBegin, onExperimentEnd } = this.params;
     let n = N;
     for (let i = 0; i < this.trials.dynamicTrials.length; i += 1) {
       const trial = this.trials.dynamicTrials[i];
@@ -32,6 +35,9 @@ class FMinIter {
         trial.book_time = now;
         trial.refresh_time = now;
         try {
+          if (typeof onExperimentBegin === 'function') {
+            onExperimentBegin(trial);
+          }
           // eslint-disable-next-line no-await-in-loop
           const result = await this.domain.evaluate(trial.args);
           trial.state = JOB_STATE_DONE;
@@ -45,6 +51,9 @@ class FMinIter {
             this.trials.refresh();
             throw e;
           }
+        }
+        if (typeof onExperimentEnd === 'function') {
+          onExperimentEnd(trial);
         }
       }
       n -= 1;
@@ -127,7 +136,8 @@ export default async (fn, space, algo, max_evals, params = {}) => {
 
   const rval = new FMinIter(
     algo, domain, trials,
-    { max_evals, rng, catchExceptions }
+    { max_evals, rng, catchExceptions },
+    params
   );
   await rval.exhaust();
   return trials;
