@@ -37,7 +37,7 @@ class FMinIter {
         trial.refresh_time = now;
         try {
           if (typeof onExperimentBegin === 'function') {
-            if (onExperimentBegin(i, trial)) {
+            if (onExperimentBegin(i, trial) === true) {
               stopped = true;
               break;
             }
@@ -57,7 +57,7 @@ class FMinIter {
           }
         }
         if (typeof onExperimentEnd === 'function') {
-          if (onExperimentEnd(i, trial)) {
+          if (onExperimentEnd(i, trial) === true) {
             stopped = true;
             break;
           }
