@@ -27,6 +27,7 @@ class FMinIter {
   async serial_evaluate(N = -1) {
     const { onExperimentBegin, onExperimentEnd } = this.callbacks;
     let n = N;
+    let stopped = false;
     for (let i = 0; i < this.trials.dynamicTrials.length; i += 1) {
       const trial = this.trials.dynamicTrials[i];
       if (trial.state === JOB_STATE_NEW) {
@@ -36,7 +37,10 @@ class FMinIter {
         trial.refresh_time = now;
         try {
           if (typeof onExperimentBegin === 'function') {
-            onExperimentBegin(i, trial);
+            if (onExperimentBegin(i, trial)) {
+              stopped = true;
+              break;
+            }
           }
           // eslint-disable-next-line no-await-in-loop
           const result = await this.domain.evaluate(trial.args);
@@ -53,7 +57,10 @@ class FMinIter {
           }
         }
         if (typeof onExperimentEnd === 'function') {
-          onExperimentEnd(i, trial);
+          if (onExperimentEnd(i, trial)) {
+            stopped = true;
+            break;
+          }
         }
       }
       n -= 1;
@@ -62,6 +69,7 @@ class FMinIter {
       }
     }
     this.trials.refresh();
+    return stopped;
   }
 
   run = async (N) => {
@@ -93,7 +101,7 @@ class FMinIter {
         }
       }
       // eslint-disable-next-line no-await-in-loop
-      await this.serial_evaluate();
+      stopped = stopped || await this.serial_evaluate();
       if (stopped) {
         break;
       }
