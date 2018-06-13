@@ -19,13 +19,13 @@ class FMinIter {
     this.algo = algo;
     this.domain = domain;
     this.trials = trials;
-    this.params = params;
+    this.callbacks = params.callbacks || {};
     this.max_queue_len = max_queue_len;
     this.max_evals = max_evals;
     this.rng = rng;
   }
   async serial_evaluate(N = -1) {
-    const { onExperimentBegin, onExperimentEnd } = this.params;
+    const { onExperimentBegin, onExperimentEnd } = this.callbacks;
     let n = N;
     for (let i = 0; i < this.trials.dynamicTrials.length; i += 1) {
       const trial = this.trials.dynamicTrials[i];
@@ -36,7 +36,7 @@ class FMinIter {
         trial.refresh_time = now;
         try {
           if (typeof onExperimentBegin === 'function') {
-            onExperimentBegin(trial);
+            onExperimentBegin(i, trial);
           }
           // eslint-disable-next-line no-await-in-loop
           const result = await this.domain.evaluate(trial.args);
@@ -53,7 +53,7 @@ class FMinIter {
           }
         }
         if (typeof onExperimentEnd === 'function') {
-          onExperimentEnd(trial);
+          onExperimentEnd(i, trial);
         }
       }
       n -= 1;
