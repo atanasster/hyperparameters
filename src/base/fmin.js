@@ -64,7 +64,7 @@ class FMinIter {
         }
       }
       n -= 1;
-      if (n === 0) {
+      if (n === 0 || stopped) {
         break;
       }
     }
