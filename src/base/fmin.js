@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable camelcase,no-await-in-loop */
 import RandomState from '../utils/RandomState';
 import { Trials, Domain, JOB_STATE_NEW, JOB_STATE_RUNNING, JOB_STATE_ERROR, JOB_STATE_DONE } from './base';
 
@@ -37,9 +37,8 @@ class FMinIter {
         trial.refresh_time = now;
         try {
           if (typeof onExperimentBegin === 'function') {
-            if (onExperimentBegin(i, trial) === true) {
+            if (await onExperimentBegin(i, trial) === true) {
               stopped = true;
-              break;
             }
           }
           // eslint-disable-next-line no-await-in-loop
@@ -57,9 +56,8 @@ class FMinIter {
           }
         }
         if (typeof onExperimentEnd === 'function') {
-          if (onExperimentEnd(i, trial) === true) {
+          if (await onExperimentEnd(i, trial) === true) {
             stopped = true;
-            break;
           }
         }
       }
@@ -100,7 +98,6 @@ class FMinIter {
           break;
         }
       }
-      // eslint-disable-next-line no-await-in-loop
       stopped = stopped || await this.serial_evaluate();
       if (stopped) {
         break;
