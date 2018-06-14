@@ -3,10 +3,17 @@ import snapshots from 'chai-snapshot-tests';
 import * as hpjs from '../src';
 
 chai.use(snapshots(__filename));
+
 const seededSample = (space) => hpjs.sample(space, { rng: new hpjs.RandomState(12345) });
+
+const objectToFixed = (obj) => Object.keys(obj).reduce((final, key) => {
+  const value = typeof obj[key] === 'number' ? obj[key].toFixed(7) : obj[key];
+  return { ...final, [key]: value};
+}, {});
+
 const randFMinSeeded = async (opt, space) => {
   const trials = await hpjs.fmin(opt, space, hpjs.estimators.rand.suggest, 100, { rng: new hpjs.RandomState(12345) });
-  return trials.argmin;
+  return objectToFixed(trials.argmin);
 }
 
 

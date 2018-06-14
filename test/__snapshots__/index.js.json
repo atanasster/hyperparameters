@@ -52,24 +52,6 @@
   "qlognormal 100, 100, 50": 4.632502881060729e+73,
   "qlognormal 1, 1, 0.001": 5.453,
   "sample: array": -3.6724888806975553,
-  "FMin for x^2 - x + 1": 0.46027336612547387,
-  "Hyperparameters space": {
-    "x": -0.7975414827282847,
-    "y": -0.7414790670683917
-  },
-  "choice as array space": 0.11762819827966259,
-  "Deep learning space": {
-    "learning_rate": 0.000012348977615718016,
-    "use_double_q_learning": true,
-    "layer1_size": 29,
-    "layer2_size": 41,
-    "layer3_size": 56,
-    "future_discount_max": 0.6085554424565691,
-    "future_discount_increment": 0.001330782994451673,
-    "recall_memory_size": 8,
-    "recall_memory_num_experiences_per_recall": 1275,
-    "num_epochs": 2
-  },
   "sample: depth": {
     "x": 1.3924361817933206,
     "y": 0.13070729472270082,
@@ -84,5 +66,23 @@
       "v": 1.703175088041835,
       "w": -1.4037662402075997
     }
+  },
+  "FMin for x^2 - x + 1": {},
+  "Hyperparameters space": {
+    "x": "-0.7975415",
+    "y": "-0.7414791"
+  },
+  "choice as array space": {},
+  "Deep learning space": {
+    "learning_rate": "0.0000123",
+    "use_double_q_learning": true,
+    "layer1_size": "29.0000000",
+    "layer2_size": "41.0000000",
+    "layer3_size": "56.0000000",
+    "future_discount_max": "0.6085554",
+    "future_discount_increment": "0.0013308",
+    "recall_memory_size": "8.0000000",
+    "recall_memory_num_experiences_per_recall": "1275.0000000",
+    "num_epochs": "2.0000000"
   }
 }
