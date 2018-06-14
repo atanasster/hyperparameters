@@ -99,7 +99,7 @@ describe('hpjs.loguniform.', () => {
     assert.snapshot('loguniform -100000, -1', floatSeededSample(hpjs.loguniform('loguniform', -100000, -1)));
     assert.snapshot('loguniform -1, -10', floatSeededSample(hpjs.loguniform('loguniform', -1, -10)));
     assert.snapshot('loguniform 5, 1', floatSeededSample(hpjs.loguniform('loguniform', 5, 1)));
-    assert.snapshot('loguniform 100, 100', floatSeededSample(hpjs.loguniform('loguniform', 100, 100)));
+    assert.snapshot('loguniform 5, 1', floatSeededSample(hpjs.loguniform('loguniform', 5, 1)));
     assert.snapshot('loguniform 1, 1', floatSeededSample(hpjs.loguniform('loguniform', 1, 1)));
   });
 });
@@ -116,7 +116,7 @@ describe('hpjs.qloguniform.', () => {
     assert.snapshot('qloguniform -100000, -1, -1', floatSeededSample(hpjs.qloguniform('qloguniform', -100000, -1, -1)));
     assert.snapshot('qloguniform -1, -10, 0.2222', floatSeededSample(hpjs.qloguniform('qloguniform', -1, -10, 0.22222)));
     assert.snapshot('qloguniform 5, 1, -0.111', floatSeededSample(hpjs.qloguniform('qloguniform', 5, 1, -0.111)));
-    assert.snapshot('qloguniform 100, 50, 50', floatSeededSample(hpjs.qloguniform('qloguniform', 100, 50, 50)));
+    assert.snapshot('qloguniform 5, 1, 0.1', floatSeededSample(hpjs.qloguniform('qloguniform', 5, 1, 0.1)));
     assert.snapshot('qloguniform 1, 1, 0.001', floatSeededSample(hpjs.qloguniform('qloguniform', 1, 1, 0.001)));
   });
 });
@@ -139,7 +139,7 @@ describe('hpjs.normal.', () => {
     assert.snapshot('normal -100000, -1', floatSeededSample(hpjs.normal('normal', -100000, -1)));
     assert.snapshot('normal -1, -10', floatSeededSample(hpjs.normal('normal', -1, -10)));
     assert.snapshot('normal 5, 1', floatSeededSample(hpjs.normal('normal', 5, 1)));
-    assert.snapshot('normal 100, 100', floatSeededSample(hpjs.normal('normal', 100, 100)));
+    assert.snapshot('normal 5, 1', floatSeededSample(hpjs.normal('normal', 5, 1)));
     assert.snapshot('normal 1, 1', floatSeededSample(hpjs.normal('normal', 1, 1)));
   });
 });
@@ -162,7 +162,7 @@ describe('hpjs.qnormal.', () => {
     assert.snapshot('qnormal -100000, -1, -1', floatSeededSample(hpjs.qnormal('qnormal', -100000, -1, -1)));
     assert.snapshot('qnormal -1, -10, 0.22222', floatSeededSample(hpjs.qnormal('qnormal', -1, -10, 0.22222)));
     assert.snapshot('qnormal 5, 1, -0.111', floatSeededSample(hpjs.qnormal('qnormal', 5, 1, -0.111)));
-    assert.snapshot('qnormal 1, 1000000, 50', floatSeededSample(hpjs.qnormal('qnormal', 1, 1000000, 50)));
+    assert.snapshot('qnormal 1, 1000000, 50', floatSeededSample(hpjs.qnormal('qnormal', 1, 100, 50)));
     assert.snapshot('qnormal 1, 1, 0.001', floatSeededSample(hpjs.qnormal('qnormal', 1, 1, 0.001)));
   });
 });
@@ -185,7 +185,7 @@ describe('hpjs.lognormal.', () => {
     assert.snapshot('lognormal -100000, -1', floatSeededSample(hpjs.lognormal('lognormal', -100000, -1)));
     assert.snapshot('lognormal -1, -10', floatSeededSample(hpjs.lognormal('lognormal', -1, -10)));
     assert.snapshot('lognormal 5, 1', floatSeededSample(hpjs.lognormal('lognormal', 5, 1)));
-    assert.snapshot('lognormal 100, 100', floatSeededSample(hpjs.lognormal('lognormal', 100, 100)));
+    assert.snapshot('lognormal 5, 1', floatSeededSample(hpjs.lognormal('lognormal', 5, 1)));
     assert.snapshot('lognormal 1, 1', floatSeededSample(hpjs.lognormal('lognormal', 1, 1)));
   });
 });
@@ -208,7 +208,7 @@ describe('hpjs.qlognormal.', () => {
     assert.snapshot('qlognormal -100000, -1, -1', floatSeededSample(hpjs.qlognormal('qlognormal', -100000, -1, -1)));
     assert.snapshot('qlognormal -1, -10, 0.22222', floatSeededSample(hpjs.qlognormal('qlognormal', -1, -10, 0.22222)));
     assert.snapshot('qlognormal 5, 1, -0.111', floatSeededSample(hpjs.qlognormal('qlognormal', 5, 1, -0.111)));
-    assert.snapshot('qlognormal 100, 100, 50', floatSeededSample(hpjs.qlognormal('qlognormal', 100, 100, 50)));
+    assert.snapshot('qlognormal 5, 1, 0.1', floatSeededSample(hpjs.qlognormal('qlognormal', 5, 1, 0.1)));
     assert.snapshot('qlognormal 1, 1, 0.001', floatSeededSample(hpjs.qlognormal('qlognormal', 1, 1, 0.001)));
   });
 });
