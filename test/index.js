@@ -220,7 +220,7 @@ describe('sample', () => {
       ]
     );
 
-    assert.snapshot('sample: array', seededSample(space));
+    assert.snapshot('sample: array', seededSample(space).toFixed(7));
   });
   it('more complex space with depth', () => {
     const space = {
@@ -238,7 +238,7 @@ describe('sample', () => {
         w: hpjs.uniform('w', -3, 0)
       }
     };
-    assert.snapshot('sample: depth', seededSample(space));
+    assert.snapshot('sample: depth', objectToFixed(seededSample(space)));
   });
 });
 describe('fmin + rand', () => {
