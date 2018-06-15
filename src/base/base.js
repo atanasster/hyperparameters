@@ -60,13 +60,13 @@ export const JOB_STATES = [
 
 
 export const TRIAL_KEYS = [
-  'tid',
+  'id',
   'result',
   'args',
   'state',
   'book_time',
   'refresh_time',
-  'expKey'];
+];
 
 export const range = (start, end) => Array.from({ length: (end - start) }, (v, k) => k + start);
 
@@ -96,10 +96,6 @@ export class Trials {
     }
   };
 
-  get tids() {
-    return this.trials.map(trial => trial.tid);
-  }
-
   get results() {
     return this.trials.map(trial => trial.result);
   }
@@ -123,7 +119,7 @@ export class Trials {
   };
 
   internalIinsertTrialDocs = (docs) => {
-    const rval = docs.map(doc => doc.tid);
+    const rval = docs.map(doc => doc.id);
     this.dynamicTrials = [...this.dynamicTrials, ...docs];
     return rval;
   };
@@ -145,12 +141,12 @@ export class Trials {
     return rval;
   };
 
-  newTrialDocs = (tids, results, args) => {
+  newTrialDocs = (ids, results, args) => {
     const rval = [];
-    for (let i = 0; i < tids.length; i += 1) {
+    for (let i = 0; i < ids.length; i += 1) {
       const doc = {
         state: JOB_STATE_NEW,
-        tid: tids[i],
+        id: ids[i],
         result: results[i],
         args: args[i],
       };
