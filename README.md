@@ -92,18 +92,18 @@
   import * as hpjs from 'hyperparameters';
   
   const space = {
-    x: hpjs.normal('x', 0, 2),
-    y: hpjs.uniform('y', 0, 1),
-    choice: hpjs.choice('choice', [
+    x: hpjs.normal(0, 2),
+    y: hpjs.uniform(0, 1),
+    choice: hpjs.choice([
       undefined, hp.uniform('float', 0, 1),
     ]),
     array: [
-      hpjs.normal('a', 0, 2), hpjs.uniform('b', 0, 3), hpjs.choice('c', [false, true]),
+      hpjs.normal(0, 2), hpjs.uniform(0, 3), hpjs.choice([false, true]),
     ],
     obj: {
-      u: hpjs.uniform('u', 0, 3),
-      v: hpjs.uniform('v', 0, 3),
-      w: hpjs.uniform('w', -3, 0)
+      u: hpjs.uniform(0, 3),
+      v: hpjs.uniform(0, 3),
+      w: hpjs.uniform(-3, 0)
     }
   };
 
@@ -122,7 +122,7 @@
   import * as hpjs from 'hyperparameters';
 
   const fn = x => ((x ** 2) - (x + 1));
-  const space = hpjs.uniform('x', -5, 5);
+  const space = hpjs.uniform(-5, 5);
   fmin(fn, space, hpjs.estimators.rand.suggest, 1000, { rng: new hpjs.RandomState(123456) })
     .then(trials => console.log(result.argmin));
   ```
