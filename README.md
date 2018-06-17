@@ -25,43 +25,43 @@
   import * as hpjs from 'hyperparameters';
   ```
 
-### hpjs.choice(label, options)
+### hpjs.choice(options)
 
 - Randomly returns one of the options
 
-### hpjs.randint(label, upper)
+### hpjs.randint(upper)
 
 - Return a random integer in the range [0, upper)
 
-### hpjs.uniform(label, low, high)
+### hpjs.uniform(low, high)
 
 - Returns a single value uniformly between `low` and `high` i.e. any value between `low` and `high` has an equal probability of being selected
 
-### hpjs.quniform(label, low, high, q)
+### hpjs.quniform(low, high, q)
 
 - returns a quantized value of `hp.uniform` calculated as `round(uniform(low, high) / q) * q`
 
-### hpjs.loguniform(label, low, high)
+### hpjs.loguniform(low, high)
 
 - Returns a value `exp(uniform(low, high))` so the logarithm of the return value is uniformly distributed.
 
-### hpjs.qloguniform(label, low, high, q)
+### hpjs.qloguniform(low, high, q)
 
 - Returns a value `round(exp(uniform(low, high)) / q) * q`
 
-### hpjs.normal(label, mu, sigma)
+### hpjs.normal(mu, sigma)
 
 - Returns a real number that's normally-distributed with mean mu and standard deviation sigma
 
-### hpjs.qnormal(label, mu, sigma, q)
+### hpjs.qnormal(mu, sigma, q)
 
 - Returns a value `round(normal(mu, sigma) / q) * q`
 
-### hpjs.lognormal(label, mu, sigma)
+### hpjs.lognormal(mu, sigma)
 
 - Returns a value `exp(normal(mu, sigma))`
 
-### hpjs.qlognormal(label, mu, sigma, q)
+### hpjs.qlognormal(mu, sigma, q)
 
 - Returns a value `round(exp(normal(mu, sigma)) / q) * q`
 

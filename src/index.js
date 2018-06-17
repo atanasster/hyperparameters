@@ -8,16 +8,16 @@ export * from './base/base';
 
 export { fmin, RandomState };
 
-export const choice = (label, options) => new Choice(label, { options });
-export const randint = (label, upper) => new Randint(label, { upper });
-export const uniform = (label, low, high) => new Uniform(label, { low, high });
-export const quniform = (label, low, high, q) => new QUniform(label, { low, high, q });
-export const loguniform = (label, low, high) => new LogUniform(label, { low, high });
-export const qloguniform = (label, low, high, q) => new QLogUniform(label, { low, high, q });
-export const normal = (label, mu, sigma) => new Normal(label, { mu, sigma });
-export const qnormal = (label, mu, sigma, q) => new QNormal(label, { mu, sigma, q });
-export const lognormal = (label, mu, sigma) => new LogNormal(label, { mu, sigma });
-export const qlognormal = (label, mu, sigma, q) => new QLogNormal(label, { mu, sigma, q });
+export const choice = options => new Choice({ options });
+export const randint = upper => new Randint({ upper });
+export const uniform = (low, high) => new Uniform({ low, high });
+export const quniform = (low, high, q) => new QUniform({ low, high, q });
+export const loguniform = (low, high) => new LogUniform({ low, high });
+export const qloguniform = (low, high, q) => new QLogUniform({ low, high, q });
+export const normal = (mu, sigma) => new Normal({ mu, sigma });
+export const qnormal = (mu, sigma, q) => new QNormal({ mu, sigma, q });
+export const lognormal = (mu, sigma) => new LogNormal({ mu, sigma });
+export const qlognormal = (mu, sigma, q) => new QLogNormal({ mu, sigma, q });
 
 export const estimators = {
   rand: {

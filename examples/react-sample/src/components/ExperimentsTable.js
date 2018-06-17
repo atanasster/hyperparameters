@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -63,28 +64,27 @@ export const periodToTime = (duration) => {
   };
 };
 
-export default ({ classes, experiments }) => {
-  return (
-    <Table className={classes.table}>
-      <TableHead>
-        <TableRow>
-          <CustomTableCell rowSpan={2}>#</CustomTableCell>
-          <CustomTableCell rowSpan={2} numeric>state</CustomTableCell>
-          <CustomTableCell rowSpan={2} numeric>start</CustomTableCell>
-          <CustomTableCell rowSpan={2} numeric>duration</CustomTableCell>
-          <CustomTableCell style={{ textAlign: 'center' }} colSpan={2}>arguments</CustomTableCell>
-          <CustomTableCell style={{ textAlign: 'center' }} colSpan={2}>results</CustomTableCell>
-        </TableRow>
-        <TableRow>
-          <CustomTableCell numeric>optimizer</CustomTableCell>
-          <CustomTableCell numeric>epochs</CustomTableCell>
-          <CustomTableCell numeric>status</CustomTableCell>
-          <CustomTableCell numeric>loss</CustomTableCell>
-        </TableRow>
+const ExperimentsTable = ({ classes, experiments }) => (
+  <Table className={classes.table}>
+    <TableHead>
+      <TableRow>
+        <CustomTableCell rowSpan={2}>#</CustomTableCell>
+        <CustomTableCell rowSpan={2} numeric>state</CustomTableCell>
+        <CustomTableCell rowSpan={2} numeric>start</CustomTableCell>
+        <CustomTableCell rowSpan={2} numeric>duration</CustomTableCell>
+        <CustomTableCell style={{ textAlign: 'center' }} colSpan={2}>arguments</CustomTableCell>
+        <CustomTableCell style={{ textAlign: 'center' }} colSpan={2}>results</CustomTableCell>
+      </TableRow>
+      <TableRow>
+        <CustomTableCell numeric>optimizer</CustomTableCell>
+        <CustomTableCell numeric>epochs</CustomTableCell>
+        <CustomTableCell numeric>status</CustomTableCell>
+        <CustomTableCell numeric>loss</CustomTableCell>
+      </TableRow>
 
-      </TableHead>
-      <TableBody>
-        {experiments.map(exp => {
+    </TableHead>
+    <TableBody>
+      {experiments.map((exp) => {
           const duration = periodToTime(exp.refresh_time - exp.book_time);
           return (
             <TableRow className={classes.row} key={exp.id}>
@@ -101,7 +101,12 @@ export default ({ classes, experiments }) => {
             </TableRow>
           );
         })}
-      </TableBody>
-    </Table>
-  );
+    </TableBody>
+  </Table>
+);
+
+ExperimentsTable.propTypes = {
+  classes: PropTypes.object.isRequired,
+  experiments: PropTypes.array.isRequired,
 }
+export default ExperimentsTable;

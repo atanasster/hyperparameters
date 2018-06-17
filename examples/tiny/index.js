@@ -31,8 +31,8 @@ async function launchHPJS() {
   // optmizer is a choice field
   // epochs ia an integer value from 10 to 250 with a step of 5
   const space = {
-    optimizer: hpjs.choice('optimizer', ['sgd', 'adam', 'adagrad', 'rmsprop']),
-    epochs: hpjs.quniform('epochs', 50, 250, 50),
+    optimizer: hpjs.choice(['sgd', 'adam', 'adagrad', 'rmsprop']),
+    epochs: hpjs.quniform(50, 250, 50),
   };
   // Generate some synthetic data for training. (y = 2x - 1) and pass to fmin as parameters
   // data will be passed as a parameters to the fmin

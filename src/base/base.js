@@ -3,8 +3,7 @@ import RandomState from '../utils/RandomState';
 class NotImplementedError extends Error {}
 
 export default class BaseSymbol {
-  constructor(label, params) {
-    this.label = label;
+  constructor(params) {
     this.params = params;
   }
   // eslint-disable-next-line no-unused-vars
@@ -118,7 +117,7 @@ export class Trials {
     return trial;
   };
 
-  internalIinsertTrialDocs = (docs) => {
+  internalInsertTrialDocs = (docs) => {
     const rval = docs.map(doc => doc.id);
     this.dynamicTrials = [...this.dynamicTrials, ...docs];
     return rval;
@@ -126,12 +125,12 @@ export class Trials {
 
   insertTrialDoc = (trial) => {
     const doc = this.assertValidTrial(trial);
-    return this.internalIinsertTrialDocs([doc])[0];
+    return this.internalInsertTrialDocs([doc])[0];
   };
 
   insertTrialDocs = (trials) => {
     const docs = trials.map(trial => this.assertValidTrial(trial));
-    return this.internalIinsertTrialDocs(docs);
+    return this.internalInsertTrialDocs(docs);
   };
 
   newTrialIds = (N) => {

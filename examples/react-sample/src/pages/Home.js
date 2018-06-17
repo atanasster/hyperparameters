@@ -39,14 +39,7 @@ class Home extends React.Component {
     experimentEnd: undefined,
   };
 
-  handleClose = () => {
-    this.setState({
-      open: false,
-    });
-  };
-
   onEpochEnd = async (epoch, logs) => {
-    const { experimentBegin } = this.state;
     this.setState({ epoch: { epoch, logs } });
     await tf.nextFrame();
   };
@@ -56,7 +49,10 @@ class Home extends React.Component {
     await tf.nextFrame();
   };
   onExperimentEnd = async (id, experiment) => {
-    this.setState({ experimentEnd: { id, experiment }, experiments: [...this.state.experiments, experiment] });
+    this.setState({
+      experimentEnd: { id, experiment },
+      experiments: [...this.state.experiments, experiment]
+    });
     await tf.nextFrame();
   };
 
@@ -78,8 +74,8 @@ class Home extends React.Component {
     // optmizer is a choice field
     // epochs ia an integer value from 10 to 250 with a step of 5
     const space = {
-      optimizer: hpjs.choice('optimizer', ['sgd', 'adam', 'adagrad', 'rmsprop']),
-      epochs: hpjs.quniform('epochs', 10, 30, 10),
+      optimizer: hpjs.choice(['sgd', 'adam', 'adagrad', 'rmsprop']),
+      epochs: hpjs.quniform(10, 30, 10),
     };
     tf.ENV.engine.startScope();
     // Generate some synthetic data for training. (y = 2x - 1) and pass to fmin as parameters
@@ -87,11 +83,16 @@ class Home extends React.Component {
     const { xs, ys } = createData();
     const experiments = await hpjs.fmin(
       modelOpt, space, hpjs.estimators.rand.suggest, 10,
-      { rng: new hpjs.RandomState(654321),
+      {
+        rng: new hpjs.RandomState(654321),
         xs,
         ys,
         onEpochEnd: this.onEpochEnd,
-        callbacks: { onExperimentBegin: this.onExperimentBegin, onExperimentEnd: this.onExperimentEnd } }
+        callbacks: {
+          onExperimentBegin: this.onExperimentBegin,
+          onExperimentEnd: this.onExperimentEnd
+        }
+      }
     );
     this.setState({ best: experiments.argmin });
     tf.ENV.engine.endScope();
@@ -109,55 +110,57 @@ class Home extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { epoch, experimentBegin, experimentEnd, experiments, best, prediction } = this.state;
+    const {
+      epoch, experimentBegin, experimentEnd, experiments, best, prediction
+    } = this.state;
 
     const spacing = 24;
     return (
       <div>
-        <Typography variant="display4" color='primary' gutterBottom>
-          TensorFlow 'tiny'
+        <Typography variant="display4" color="primary" gutterBottom>
+          TensorFlow "tiny"
         </Typography>
         <Grid container spacing={spacing}>
           {experimentBegin && (
-              <ValuesRow classes={classes} title='running'>
-                <Value label='#' value={experimentBegin.id} size={2} />
-                {Object.keys(experimentBegin.experiment.args).map(key => (
-                  <Value key={`begin_${key}`} label={key} value={experimentBegin.experiment.args[key]} size={3} />
+          <ValuesRow classes={classes} title="running">
+            <Value label="#" value={experimentBegin.id} size={2} />
+            {Object.keys(experimentBegin.experiment.args).map(key => (
+              <Value key={`begin_${key}`} label={key} value={experimentBegin.experiment.args[key]} size={3} />
                 ))}
-                {epoch && (
-                  <React.Fragment>
-                    <Value label='epoch' value={epoch.epoch} size={2} />
-                    <Value label='loss' value={epoch.logs.loss.toFixed(5)} size={2} />
-                  </React.Fragment>
+            {epoch && (
+            <React.Fragment>
+              <Value label="epoch" value={epoch.epoch} size={2} />
+              <Value label="loss" value={epoch.logs.loss.toFixed(5)} size={2} />
+            </React.Fragment>
                 )}
 
-              </ValuesRow>
+          </ValuesRow>
             )}
-            {experimentEnd && (
-              <ValuesRow classes={classes} title='completed'>
-                <Value label='#' value={experimentEnd.id} size={2} />
-                {Object.keys(experimentEnd.experiment.args).map(key => (
-                  <Value key={`end_${key}`} label={key} value={experimentEnd.experiment.args[key]} size={3} />
+          {experimentEnd && (
+          <ValuesRow classes={classes} title="completed">
+            <Value label="#" value={experimentEnd.id} size={2} />
+            {Object.keys(experimentEnd.experiment.args).map(key => (
+              <Value key={`end_${key}`} label={key} value={experimentEnd.experiment.args[key]} size={3} />
                 ))}
 
-                <Value label='loss' value={experimentEnd.experiment.result.loss.toFixed(5)} size={4} />
-              </ValuesRow>
+            <Value label="loss" value={experimentEnd.experiment.result.loss.toFixed(5)} size={4} />
+          </ValuesRow>
             )}
-            {best && (
-              <ValuesRow classes={classes} title='best experiment'>
-                {Object.keys(best).map(key => (
-                  <Value key={`best_${key}`} label={key} value={best[key]} size={3} />
+          {best && (
+          <ValuesRow classes={classes} title="best experiment">
+            {Object.keys(best).map(key => (
+              <Value key={`best_${key}`} label={key} value={best[key]} size={3} />
                 ))}
-                <Grid item md={3} align='end' >
-                  <Button variant="contained" color="secondary" size="large" onClick={this.onPredictClick}>
+            <Grid item md={3} align="end" >
+              <Button variant="contained" color="secondary" size="large" onClick={this.onPredictClick}>
                     predict
-                  </Button>
-                </Grid>
-                {prediction && (
-                  <Value label='prediction' value={prediction[0].toFixed(5)} size={3} />
+              </Button>
+            </Grid>
+            {prediction && (
+            <Value label="prediction" value={prediction[0].toFixed(5)} size={3} />
                 )}
 
-              </ValuesRow>
+          </ValuesRow>
             )}
           <Grid item xs={12}>
             <Button variant="contained" color="secondary" size="large" onClick={this.onRunClick}>

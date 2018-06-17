@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 export default ({ classes, children, title }) => (
   <Grid item xs={12}>
     <Paper className={classes.inforow}>
-      <Typography variant="title" align='left' color='primary'>
+      <Typography variant="title" align="left" color="primary">
         {title}
       </Typography>
       <hr />

@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 
 export default ({ value, label, size }) => (
   <Grid item md={size} sm={12}>
-    <Grid container direction='column' alignItems='flex-end'>
+    <Grid container direction="column" alignItems="flex-end">
       <Typography variant="headline" gutterBottom>
         {value}
       </Typography>
