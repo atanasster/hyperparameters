@@ -1,37 +1,30 @@
 import RandomState from '../utils/RandomState';
 
-class NotImplementedError extends Error {}
 
-export default class BaseSymbol {
-  constructor(params) {
-    this.params = params;
-  }
-  // eslint-disable-next-line no-unused-vars
-  eval(rng) {
-    // Override this method to generate a new value
-    throw new NotImplementedError(this.params);
-  }
+export default class BaseSpace {
+  eval = (expr, { rng: rState }) => {
+    if (expr === undefined || expr === null) {
+      return expr;
+    }
+    const { name, ...rest } = expr;
+    const space = this[name];
+    let rng = rState;
+    if (!rng) {
+      rng = new RandomState();
+    }
+    if (typeof space !== 'function') {
+      if (Array.isArray(expr)) {
+        return expr.map(item => this.eval(item, { rng }));
+      }
+      if (typeof expr === 'object') {
+        return Object.keys(expr)
+          .reduce((r, key) => ({ ...r, [key]: this.eval(expr[key], { rng }) }), {});
+      }
+      return expr;
+    }
+    return space(rest, rng);
+  };
 }
-export const expressionEval = (expr, { rng: rState }) => {
-  let rng = rState;
-  if (!rng) {
-    rng = new RandomState();
-  }
-  if (expr === undefined || expr === null) {
-    return expr;
-  }
-  if (typeof expr.eval !== 'function') {
-    if (Array.isArray(expr)) {
-      return expr.map(item => expressionEval(item, { rng }));
-    }
-    if (typeof expr === 'object') {
-      return Object.keys(expr)
-        .reduce((r, key) => ({ ...r, [key]: expressionEval(expr[key], { rng }) }), {});
-    }
-    return expr;
-  }
-  return expr.eval(rng);
-};
 
 export const STATUS_NEW = 'new';
 export const STATUS_RUNNING = 'running';
