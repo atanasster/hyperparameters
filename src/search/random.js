@@ -1,4 +1,5 @@
-import BaseSpace from './base';
+import RandomState from '../utils/RandomState';
+import BaseSpace from '../base/base';
 
 export class RandomSearch extends BaseSpace {
   choice = (params, rng) => {
@@ -52,7 +53,7 @@ export class RandomSearch extends BaseSpace {
   };
 }
 
-export const sample = (space, params = {}) => {
+export const randomSample = (space, params = {}) => {
   const rs = new RandomSearch();
   const args = rs.eval(space, params);
   if (Object.keys(args).length === 1) {
@@ -62,3 +63,14 @@ export const sample = (space, params = {}) => {
   return args;
 };
 
+export const randomSearch = (newIds, domain, trials, seed) => {
+  const rng = new RandomState(seed);
+  let rval = [];
+  const rs = new RandomSearch();
+  newIds.forEach((newId) => {
+    const paramsEval = rs.eval(domain.expr, { rng });
+    const result = domain.newResult();
+    rval = [...rval, ...trials.newTrialDocs([newId], [result], [paramsEval])];
+  });
+  return rval;
+};

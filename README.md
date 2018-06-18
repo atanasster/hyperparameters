@@ -107,7 +107,7 @@
     }
   };
 
-  console.log(hpjs.sample(space));
+  console.log(hpjs.sample.randomSample(space));
 
   ```
 ## fmin - find best value of a function over the arguments 
@@ -123,7 +123,7 @@
 
   const fn = x => ((x ** 2) - (x + 1));
   const space = hpjs.uniform(-5, 5);
-  fmin(fn, space, hpjs.estimators.rand.suggest, 1000, { rng: new hpjs.RandomState(123456) })
+  fmin(fn, space, hpjs.search.randomSearch, 1000, { rng: new hpjs.RandomState(123456) })
     .then(trials => console.log(result.argmin));
   ```
 ## License

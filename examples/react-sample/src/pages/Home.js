@@ -82,7 +82,7 @@ class Home extends React.Component {
     // data will be passed as a parameters to the fmin
     const { xs, ys } = createData();
     const experiments = await hpjs.fmin(
-      modelOpt, space, hpjs.estimators.rand.suggest, 10,
+      modelOpt, space, hpjs.search.randomSearch, 10,
       {
         rng: new hpjs.RandomState(654321),
         xs,

@@ -4,9 +4,9 @@ import * as hpjs from '../src';
 
 chai.use(snapshots(__filename));
 
-const seededSample = (space) => hpjs.sample(space, { rng: new hpjs.RandomState(12345) });
+const seededSample = (space) => hpjs.sample.randomSample(space, { rng: new hpjs.RandomState(12345) });
 
-const floatSeededSample = (space) => hpjs.sample(space, { rng: new hpjs.RandomState(12345) }).toFixed(7);
+const floatSeededSample = (space) => hpjs.sample.randomSample(space, { rng: new hpjs.RandomState(12345) }).toFixed(7);
 
 const objectToFixed = (obj) => Object.keys(obj).reduce((final, key) => {
   const value = typeof obj[key] === 'number' ? obj[key].toFixed(7) : obj[key];
@@ -14,7 +14,7 @@ const objectToFixed = (obj) => Object.keys(obj).reduce((final, key) => {
 }, {});
 
 const randFMinSeeded = async (opt, space) => {
-  const trials = await hpjs.fmin(opt, space, hpjs.estimators.rand.suggest, 100, { rng: new hpjs.RandomState(12345) });
+  const trials = await hpjs.fmin(opt, space, hpjs.search.randomSearch, 100, { rng: new hpjs.RandomState(12345) });
   return objectToFixed(trials.argmin);
 }
 

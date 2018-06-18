@@ -1,8 +1,7 @@
 import fmin from './base/fmin';
-import { suggest as randSuggest } from './optimizers/rand';
+import { randomSample, randomSearch } from './search/random';
 import RandomState from './utils/RandomState';
 
-export * from './base/stochastic';
 export * from './base/base';
 
 export { fmin, RandomState };
@@ -26,8 +25,10 @@ export const qlognormal = (mu, sigma, q) => ({
   name: 'qlognormal', mu, sigma, q
 });
 
-export const estimators = {
-  rand: {
-    suggest: randSuggest,
-  }
+export const search = {
+  randomSearch,
+};
+
+export const sample = {
+  randomSample,
 };

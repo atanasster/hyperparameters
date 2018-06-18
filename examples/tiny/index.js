@@ -40,7 +40,7 @@ async function launchHPJS() {
   const ys = tf.tensor2d([-3, -1, 1, 3, 5, 7], [6, 1]);
 
   const trials = await hpjs.fmin(
-    modelOpt, space, hpjs.estimators.rand.suggest, 10,
+    modelOpt, space, hpjs.search.randomSearch, 10,
     { rng: new hpjs.RandomState(654321), xs, ys }
   );
   const opt = trials.argmin;
