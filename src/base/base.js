@@ -6,12 +6,12 @@ export default class BaseSpace {
     if (expr === undefined || expr === null) {
       return expr;
     }
-    const { name, ...rest } = expr;
-    const space = this[name];
     let rng = rState;
     if (!rng) {
       rng = new RandomState();
     }
+    const { name, ...rest } = expr;
+    const space = this[name];
     if (typeof space !== 'function') {
       if (Array.isArray(expr)) {
         return expr.map(item => this.eval(item, { rng }));

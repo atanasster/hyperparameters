@@ -1,5 +1,6 @@
 import fmin from './base/fmin';
 import { randomSample, randomSearch } from './search/random';
+import { gridSample, gridSearch } from './search/grid';
 import RandomState from './utils/RandomState';
 
 export * from './base/base';
@@ -27,8 +28,10 @@ export const qlognormal = (mu, sigma, q) => ({
 
 export const search = {
   randomSearch,
+  gridSearch,
 };
 
 export const sample = {
   randomSample,
+  gridSample,
 };

@@ -1,6 +1,7 @@
 import chai, { assert } from 'chai';
 import snapshots from 'chai-snapshot-tests';
 import * as hpjs from '../src';
+import { GridSearch } from '../src/search/grid';
 
 chai.use(snapshots(__filename));
 
@@ -213,7 +214,7 @@ describe('hpjs.qlognormal.', () => {
   });
 });
 
-describe('sample', () => {
+describe('random sample', () => {
   it('Choice as array', () => {
     const space = hpjs.choice(
       [
@@ -243,6 +244,101 @@ describe('sample', () => {
     assert.snapshot('sample: depth', objectToFixed(seededSample(space)));
   });
 });
+describe('grid search', () => {
+  const gs = new GridSearch();
+  it('choice', () => {
+    const space = hpjs.choice(['cat', 'dog']);
+    assert(gs.numSamples(space) === 2, `choice num samples ${gs.numSamples(space)}`);
+  });
+  it('randint', () => {
+    const space = hpjs.randint(5);
+    assert(gs.numSamples(space) === 5, `randint [0, 5) ${gs.numSamples(space)}`);
+  });
+  it('quniform', () => {
+    let space = hpjs.quniform(0, 1, 0.1);
+    assert(gs.numSamples(space) === 11, `quniform 0,1,0.1 ${gs.numSamples(space)}`);
+    space = hpjs.quniform(-5, 5, 1);
+    assert(gs.numSamples(space) === 11, `quniform -5,5,1 ${gs.numSamples(space)}`);
+    space = hpjs.quniform(1, 10, 2);
+    assert(gs.numSamples(space) === 5, `quniform 1,10,2 ${gs.numSamples(space)}`);
+  });
+  it('qloguniform', () => {
+    let space = hpjs.qloguniform(0,1,0.1);
+    assert(gs.numSamples(space) === 11, `qloguniform 0,1,0.1 ${gs.numSamples(space)}`);
+    space = hpjs.qloguniform(-5,5,1);
+    assert(gs.numSamples(space) === 11, `qloguniform -5,5,1 ${gs.numSamples(space)}`);
+    space = hpjs.qloguniform(1,10,2);
+    assert(gs.numSamples(space) === 5, `qloguniform 1,10,2 ${gs.numSamples(space)}`);
+  });
+
+  it('qnormal', () => {
+    let space = hpjs.qnormal(0, 1, 0.1);
+    assert(gs.numSamples(space) === 41, `qnormal 0,1,0.1 ${gs.numSamples(space)}`);
+    space = hpjs.qnormal(-5,5,1);
+    assert(gs.numSamples(space) === 21, `qnormal -5,5,1 ${gs.numSamples(space)}`);
+    space = hpjs.qnormal(1,10,2);
+    assert(gs.numSamples(space) === 21, `qnormal 1,10,2 ${gs.numSamples(space)}`);
+
+  });
+  it('uniform', () => {
+    try {
+      gs.numSamples(hpjs.uniform(0, 1));
+      assert(false, 'hpjs.uniform not allowed for grid search');
+    } catch (e) {
+      assert(e.message === 'Can not evaluate length of non-discrete parameter "uniform"', `exception message ${e.message}`);
+    }
+  });
+  it('loguniform', () => {
+    try {
+      gs.numSamples(hpjs.loguniform(0, 1));
+      assert(false, 'hpjs.loguniform not allowed for grid search');
+    } catch (e) {
+      assert(e.message === 'Can not evaluate length of non-discrete parameter "loguniform"', `exception message ${e.message}`);
+    }
+  });
+  it('normal', () => {
+    try {
+      gs.numSamples(hpjs.normal(0, 1));
+      assert(false, 'hpjs.normal not allowed for grid search');
+    } catch (e) {
+      assert(e.message === 'Can not evaluate length of non-discrete parameter "normal"', `exception message ${e.message}`);
+    }
+  });
+  it('lognormal', () => {
+    try {
+      gs.numSamples(hpjs.lognormal(0, 1));
+      assert(false, 'hpjs.lognormal not allowed for grid search');
+    } catch (e) {
+      assert(e.message === 'Can not evaluate length of non-discrete parameter "lognormal"', `exception message ${e.message}`);
+    }
+  });
+  it('choice grid search', () => {
+    const space = hpjs.choice(
+      [
+        hpjs.qlognormal(0, 1, 1), //5
+        hpjs.quniform(-10, 10, 1) //21
+      ]
+    );
+    assert(gs.numSamples(space) === 26, `choice  ${gs.numSamples(space)}`);
+  });
+  it('more complex space with depth', () => {
+    const space = {
+      choice: hpjs.choice([
+        null, hpjs.randint(5),
+      ]),
+      array: [
+        hpjs.qnormal(0, 2, 1), hpjs.quniform(0, 3, 1), hpjs.choice([false, true]),
+      ],
+      obj: {
+        u: hpjs.quniform(0, 3,  0.2),
+        v: hpjs.quniform(0, 3,  0.2),
+        w: hpjs.quniform(-3, 0,  0.2)
+      }
+    };
+    assert(gs.numSamples(space) === 1769472, `complex  ${gs.numSamples(space)}`);
+  });
+});
+
 describe('fmin + rand', () => {
   it('FMin for x^2 - x + 1', async () => {
     const space = hpjs.uniform(-5, 5);
