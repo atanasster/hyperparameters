@@ -126,6 +126,113 @@
   fmin(fn, space, hpjs.search.randomSearch, 1000, { rng: new hpjs.RandomState(123456) })
     .then(trials => console.log(result.argmin));
   ```
+## Getting started with tensorflow.js
+
+### 1. [include javascript file](https://github.com/atanasster/hyperparameters/tree/master/examples/tiny)  
+
+* include (latest) version from cdn
+
+`<script src="https://cdn.jsdelivr.net/npm/hyperparameters@0.25.2/dist/hyperparameters.min.js" />`
+
+* create search space
+```
+  const space = {
+    optimizer: hpjs.choice(['sgd', 'adam', 'adagrad', 'rmsprop']),
+    epochs: hpjs.quniform(50, 250, 50),
+  };
+
+```
+* create tensorflow.js train function. Parameters are optimizer and epochs. input and output data passed as second argument
+```
+const trainModel = async ({ optimizer, epochs }, { xs, ys }) => {
+  // Create a simple model.
+  const model = tf.sequential();
+  model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+  // Prepare the model for training: Specify the loss and the optimizer.
+  model.compile({
+    loss: 'meanSquaredError',
+    optimizer
+  });
+  // Train the model using the data.
+  const h = await model.fit(xs, ys, { epochs });
+  return { model, loss: h.history.loss[h.history.loss.length - 1] };
+};
+```
+* create optimization function
+```
+const modelOpt = async ({ optimizer, epochs }, { xs, ys }) => {
+  const { loss } = await trainModel({ optimizer, epochs }, { xs, ys });
+  return { loss, status: hpjs.STATUS_OK };
+};
+```
+
+* find optimal hyperparameters
+```
+const trials = await hpjs.fmin(
+    modelOpt, space, hpjs.search.randomSearch, 10,
+    { rng: new hpjs.RandomState(654321), xs, ys }
+  );
+  const opt = trials.argmin;
+  console.log('best optimizer',opt.optimizer);
+  console.log('best no of epochs', opt.epochs);
+```
+
+### 2. [install with npm](https://github.com/atanasster/hyperparameters/tree/master/examples/react-sample)
+* install hyperparameters in your package.json
+```
+$ npm install hyperparameters 
+```
+
+* import hyperparameters
+```
+import * as tf from '@tensorflow/tfjs';
+import * as hpjs from 'hyperparameters';
+```
+
+* create search space
+```
+  const space = {
+    optimizer: hpjs.choice(['sgd', 'adam', 'adagrad', 'rmsprop']),
+    epochs: hpjs.quniform(50, 250, 50),
+  };
+
+```
+* create tensorflow.js train function. Parameters are optimizer and epochs. input and output data passed as second argument
+```
+const trainModel = async ({ optimizer, epochs }, { xs, ys }) => {
+  // Create a simple model.
+  const model = tf.sequential();
+  model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+  // Prepare the model for training: Specify the loss and the optimizer.
+  model.compile({
+    loss: 'meanSquaredError',
+    optimizer
+  });
+  // Train the model using the data.
+  const h = await model.fit(xs, ys, { epochs });
+  return { model, loss: h.history.loss[h.history.loss.length - 1] };
+};
+```
+* create optimization function
+```
+const modelOpt = async ({ optimizer, epochs }, { xs, ys }) => {
+  const { loss } = await trainModel({ optimizer, epochs }, { xs, ys });
+  return { loss, status: hpjs.STATUS_OK };
+};
+```
+
+* find optimal hyperparameters
+```
+const trials = await hpjs.fmin(
+  modelOpt, space, hpjs.search.randomSearch, 10,
+  { rng: new hpjs.RandomState(654321), xs, ys }
+);
+const opt = trials.argmin;
+console.log('best optimizer',opt.optimizer);
+console.log('best no of epochs', opt.epochs);
+```
+
+
 ## License
 
 MIT © Atanas Stoyanov & Martin Stoyanov

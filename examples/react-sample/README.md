@@ -1,13 +1,19 @@
 # TensorFlow.js Tiny Example with HyperParameters.js 
 
-This minimal example loads tfjs and hpjs from a CDN, builds and trains a minimal model,
-and finds the optimal optimizer and number of epochs.
+This minimal tfjs example builds and trains a minimal model, showing the trials history and the best optimizer and number of epochs with a react sample application
 
 ## Getting started
 
-* include (latest) version from cdn
+* install hyperparameters in pavkage.json
+```
+$ npm install hyperparameters 
+```
 
-`<script src="https://cdn.jsdelivr.net/npm/hyperparameters@0.25.2/dist/hyperparameters.min.js" />`
+* import hyperparameters
+```
+import * as tf from '@tensorflow/tfjs';
+import * as hpjs from 'hyperparameters';
+```
 
 * create search space
 ```
@@ -44,10 +50,11 @@ const modelOpt = async ({ optimizer, epochs }, { xs, ys }) => {
 * find optimal hyperparameters
 ```
 const trials = await hpjs.fmin(
-    modelOpt, space, hpjs.search.randomSearch, 10,
-    { rng: new hpjs.RandomState(654321), xs, ys }
-  );
+  modelOpt, space, hpjs.search.randomSearch, 10,
+  { rng: new hpjs.RandomState(654321), xs, ys }
+);
 const opt = trials.argmin;
 console.log('best optimizer',opt.optimizer);
 console.log('best no of epochs', opt.epochs);
 ```
+

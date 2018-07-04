@@ -1,56 +1,52 @@
+/* eslint-disable class-methods-use-this */
 import RandomState from '../utils/RandomState';
 import BaseSpace from '../base/base';
 
 export class GridSearch extends BaseSpace {
-  choice = (params, rng) => {
+  * choice(params) {
     const { options } = params;
-    const idx = rng.randrange(0, options.length, 1);
-    const option = options[idx];
-    const arg = this.eval(option, { rng });
-    return arg;
-  };
+    for (let i = 0; i < options.length; i += 1) {
+      yield this.eval(options[i]);
+    }
+  }
 
-  randint = (params, rng) => rng.randrange(0, params.upper, 1)
+  * randint(params) {
+    for (let i = 0; i < params.upper; i += 1) {
+      yield i;
+    }
+  }
 
-  uniform = (params, rng) => {
-    const { low, high } = params;
-    return rng.uniform(low, high);
-  };
 
-  quniform = (params, rng) => {
+  * quniform(params) {
     const { low, high, q } = params;
-    return Math.round(rng.uniform(low, high) / q) * q;
-  };
+    for (let i = low; i <= high; i += q) {
+      yield i;
+    }
+  }
 
-  loguniform = (params, rng) => {
-    const { low, high } = params;
-    return Math.exp(rng.uniform(low, high));
-  };
 
-  qloguniform = (params, rng) => {
+  * qloguniform(params) {
     const { low, high, q } = params;
-    return Math.round(Math.exp(rng.uniform(low, high)) / q) * q;
-  };
+    for (let i = low; i <= high; i += q) {
+      yield i;
+    }
+  }
 
-  normal = (params, rng) => {
-    const { mu, sigma } = params;
-    return rng.gauss(mu, sigma);
-  };
-
-  qnormal = (params, rng) => {
+  * qnormal(params) {
     const { mu, sigma, q } = params;
-    return Math.round(rng.gauss(mu, sigma) / q) * q;
-  };
+    for (let i = mu - (2 * sigma); i <= mu + (2 * sigma); i += q) {
+      yield i;
+    }
+  }
 
-  lognormal = (params, rng) => {
-    const { mu, sigma } = params;
-    return Math.exp(rng.gauss(mu, sigma));
-  };
 
-  qlognormal = (params, rng) => {
+  * qlognormal(params) {
     const { mu, sigma, q } = params;
-    return Math.round(Math.exp(rng.gauss(mu, sigma)) / q) * q;
-  };
+    for (let i = mu - (2 * sigma); i <= mu + (2 * sigma); i += q) {
+      yield i;
+    }
+  }
+
   numSamples = (expr) => {
     if (expr === undefined || expr === null) {
       return 1;
@@ -83,6 +79,33 @@ export class GridSearch extends BaseSpace {
       default:
         throw new Error(`Can not evaluate length of non-discrete parameter "${name}"`);
     }
+  };
+
+  * samples(expr) {
+    if (expr === undefined || expr === null) {
+      yield expr;
+      return;
+    }
+    const { name } = expr;
+    const space = this[name];
+    if (space === undefined || space.constructor === null || space.constructor.name !== 'GeneratorFunction') {
+      if (Array.isArray(expr)) {
+        for (let i = 0; i < expr.length; i += 1) {
+          yield* this.samples(expr[i]);
+        }
+      } else if (typeof expr === 'string') {
+        yield expr;
+      } else if (typeof expr === 'object') {
+        const keys = Object.keys(expr);
+        for (let i = 0; i < keys.length; i += 1) {
+          yield* this.samples(expr[keys[i]]);
+        }
+      } else {
+        yield expr;
+      }
+      return;
+    }
+    yield* space;
   }
 }
 

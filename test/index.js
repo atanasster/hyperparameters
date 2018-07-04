@@ -20,7 +20,7 @@ const randFMinSeeded = async (opt, space) => {
 }
 
 
-describe('hpjs.choice.', () => {
+/*describe('hpjs.choice.', () => {
   it('is a string', () => {
     const val = seededSample(hpjs.choice(['cat', 'dog']));
     assert.typeOf(val, 'string');
@@ -243,10 +243,10 @@ describe('random sample', () => {
     };
     assert.snapshot('sample: depth', objectToFixed(seededSample(space)));
   });
-});
+});*/
 describe('grid search', () => {
   const gs = new GridSearch();
-  it('choice', () => {
+  /*it('choice', () => {
     const space = hpjs.choice(['cat', 'dog']);
     assert(gs.numSamples(space) === 2, `choice num samples ${gs.numSamples(space)}`);
   });
@@ -336,10 +336,21 @@ describe('grid search', () => {
       }
     };
     assert(gs.numSamples(space) === 1769472, `complex  ${gs.numSamples(space)}`);
-  });
+  });*/
+  const space = hpjs.choice(
+      [
+        hpjs.qlognormal(0, 1, 1), //5
+        hpjs.quniform(-10, 10, 1) //21
+      ]
+    );
+    let i = 1;
+    for (let sample of gs.samples(space)) {
+      console.log(i,sample);
+      i += 1;
+    }
 });
 
-describe('fmin + rand', () => {
+/*describe('fmin + rand', () => {
   it('FMin for x^2 - x + 1', async () => {
     const space = hpjs.uniform(-5, 5);
     const opt = x => ((x ** 2) - (x + 1));
@@ -383,5 +394,5 @@ describe('fmin + rand', () => {
 
     assert.snapshot('Deep learning space', await randFMinSeeded(opt, space));
   });
-});
+});*/
 

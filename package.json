@@ -1,6 +1,6 @@
 {
   "name": "hyperparameters",
-  "version": "0.25.2",
+  "version": "0.25.3",
   "description": "javascript hyperparameters search",
   "main": "lib/hyperparameters.js",
   "unpkg": "dist/hyperparameters.js",
@@ -8,7 +8,7 @@
   "scripts": {
     "test": "npm run lint && npm run cover",
     "test:prod": "cross-env BABEL_ENV=production npm run test",
-    "test:only": "mocha --require babel-core/register --require babel-polyfill --recursive",
+    "test:only": "mocha $NODE_DEBUG_OPTION --require babel-core/register --require babel-polyfill --recursive",
     "test:watch": "npm test -- --watch",
     "cover": "istanbul cover _mocha -- --require babel-core/register --require babel-polyfill --recursive",
     "lint": "eslint src test",
