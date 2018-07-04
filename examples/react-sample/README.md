@@ -4,7 +4,7 @@ This minimal tfjs example builds and trains a minimal model, showing the trials 
 
 ## Getting started
 
-* install hyperparameters in pavkage.json
+* install hyperparameters in your package.json
 ```
 $ npm install hyperparameters 
 ```
