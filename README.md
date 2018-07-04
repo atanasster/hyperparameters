@@ -7,8 +7,9 @@
 
 
 ## Features
-
-* **hyperopt inspired** - somewhat compatible with [https://github.com/hyperopt/hyperopt](https://github.com/hyperopt/hyperopt) 
+* **written in javascript** - Use with tensorflow.js as a replacement to your python hyperparameters library
+* **use from cdn or npm** - Link hpjs in your html file from a cdn, or install in your project with npm 
+* **versatile** - Utilize multiple parameters and multiple search algorithms (grid search, random, bayesian) 
 
 
 
