@@ -7,7 +7,7 @@ and finds the optimal optimizer and number of epochs.
 
 * include (latest) version from cdn
 
-`<script src="https://cdn.jsdelivr.net/npm/hyperparameters@0.25.2/dist/hyperparameters.min.js" />`
+`<script src="https://cdn.jsdelivr.net/npm/hyperparameters@latest/dist/hyperparameters.min.js" />`
 
 * create search space
 ```
