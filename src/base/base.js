@@ -7,7 +7,7 @@ export default class BaseSpace {
       return expr;
     }
     let rng = rState;
-    if (!rng) {
+    if (rng === undefined) {
       rng = new RandomState();
     }
     const { name, ...rest } = expr;
@@ -171,27 +171,6 @@ export class Trials {
   losses = () => this.results.map(r => r.loss);
 
   statuses = () => this.results.map(r => r.status);
-
-  averageBestError = () => {
-    /* const results = this.results.filter(result => result.status === STATUS_OK);
-    const loss = results.map(r => r.loss);
-    const loss_v = results.map(r => r.loss_variance);
-    const true_loss = results.map(r => (r.true_loss === undefined ? r.loss : r.true_loss));
-
-            if (loss_v.every(variance => variance === 0)) {
-              return true_loss[argmin(loss)]
-            }
-            else {
-                let cutoff = 0;
-                const sigma = Math.sqrt(loss_v[0]);
-                while (cutoff < len(loss3) &&loss[cutoff] < loss[0] + 3 * sigma) {
-                  cutoff += 1
-                }
-                const pmin = pmin_sampled(loss3[:cutoff, 0], loss3[:cutoff, 1])
-                const avg_true_loss = (pmin * loss3[:cutoff, 2]).sum()
-                return avg_true_loss
-    */
-  };
 
   bestTrial(compare = (a, b) => a.loss < b.loss) {
     let best = this.trials[0];

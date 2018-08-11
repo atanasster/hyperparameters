@@ -1,112 +1,101 @@
 /* eslint-disable class-methods-use-this */
-import RandomState from '../utils/RandomState';
 import BaseSpace from '../base/base';
 
+class GridSearchParam {
+  constructor(params, gs) {
+    this.params = params;
+    this.gs = gs;
+  }
+
+  get numSamples() {
+    return 1;
+  }
+
+  getSample = () => undefined;
+  sample = (index) => {
+    if (index < 0 || index >= this.numSamples) {
+      throw new Error(`invalid sample index "${index}"`);
+    }
+    return this.getSample(index);
+  }
+}
+
+
+class GridSearchNotImplemented extends GridSearchParam {
+  get numSamples() {
+    throw new Error(`Can not evaluate length of non-discrete parameter "${this.params.name}"`);
+  }
+  getSample = index => this.params.options[index];
+}
+
+class GridSearchChoice extends GridSearchParam {
+  get numSamples() {
+    return this.params.options.reduce((r, e) => (r + this.gs.numSamples(e)), 0);
+  }
+  getSample = index => this.params.options[index];
+}
+
+class GridSearchRandInt extends GridSearchParam {
+  get numSamples() {
+    return this.params.upper;
+  }
+  getSample = index => index;
+}
+
+class GridSearchUniform extends GridSearchParam {
+  get numSamples() {
+    return Math.floor((this.params.high - this.params.low) / this.params.q) + 1;
+  }
+  getSample = index => this.params.low + (index * this.params.q);
+}
+
+class GridSearchNormal extends GridSearchParam {
+  get numSamples() {
+    return Math.floor((4 * this.params.sigma) / this.params.q) + 1;
+  }
+  getSample = index => (this.params.mu - (2 * this.params.sigma)) + (index * this.params.q);
+}
+
+const GridSearchParamas = {
+  choice: GridSearchChoice,
+  randint: GridSearchRandInt,
+  quniform: GridSearchUniform,
+  qloguniform: GridSearchUniform,
+  qnormal: GridSearchNormal,
+  qlognormal: GridSearchNormal,
+  uniform: GridSearchNotImplemented,
+  loguniform: GridSearchNotImplemented,
+  normal: GridSearchNotImplemented,
+  lognormal: GridSearchNotImplemented,
+};
+
 export class GridSearch extends BaseSpace {
-  * choice(params) {
-    const { options } = params;
-    for (let i = 0; i < options.length; i += 1) {
-      yield this.eval(options[i]);
-    }
-  }
-
-  * randint(params) {
-    for (let i = 0; i < params.upper; i += 1) {
-      yield i;
-    }
-  }
-
-
-  * quniform(params) {
-    const { low, high, q } = params;
-    for (let i = low; i <= high; i += q) {
-      yield i;
-    }
-  }
-
-
-  * qloguniform(params) {
-    const { low, high, q } = params;
-    for (let i = low; i <= high; i += q) {
-      yield i;
-    }
-  }
-
-  * qnormal(params) {
-    const { mu, sigma, q } = params;
-    for (let i = mu - (2 * sigma); i <= mu + (2 * sigma); i += q) {
-      yield i;
-    }
-  }
-
-
-  * qlognormal(params) {
-    const { mu, sigma, q } = params;
-    for (let i = mu - (2 * sigma); i <= mu + (2 * sigma); i += q) {
-      yield i;
-    }
-  }
-
   numSamples = (expr) => {
-    if (expr === undefined || expr === null) {
-      return 1;
+    const flat = this.samples(expr);
+    return flat.reduce((r, o) => r * o.samples, 1);
+  };
+  samples = (expr) => {
+    if (!expr) {
+      return expr;
     }
+    const flat = [];
     const { name } = expr;
-    const space = this[name];
-    if (typeof space !== 'function') {
+    const Param = GridSearchParamas[name];
+    if (Param === undefined) {
       if (Array.isArray(expr)) {
-        return expr.reduce((r, el) => (r * this.numSamples(el)), 1);
+        expr.forEach(el => flat.push(...this.samples(el)));
       }
       if (typeof expr === 'string') {
-        return 1;
+        flat.push({ name, samples: 1, expr });
       }
       if (typeof expr === 'object') {
-        return Object.keys(expr).reduce((r, key) => (r * this.numSamples(expr[key])), 1);
+        Object.keys(expr).forEach(key => flat.push(...this.samples(expr[key])));
       }
-      return 1;
+    } else {
+      flat.push({ name, samples: (new Param(expr, this)).numSamples, expr });
     }
-    switch (name) {
-      case 'choice':
-        return expr.options.reduce((r, e) => (r + this.numSamples(e)), 0);
-      case 'randint':
-        return expr.upper;
-      case 'quniform':
-      case 'qloguniform':
-        return Math.floor((expr.high - expr.low) / expr.q) + 1;
-      case 'qnormal':
-      case 'qlognormal':
-        return Math.floor((4 * expr.sigma) / expr.q) + 1;
-      default:
-        throw new Error(`Can not evaluate length of non-discrete parameter "${name}"`);
-    }
+    return flat;
   };
-
-  * samples(expr) {
-    if (expr === undefined || expr === null) {
-      yield expr;
-      return;
-    }
-    const { name } = expr;
-    const space = this[name];
-    if (space === undefined || space.constructor === null || space.constructor.name !== 'GeneratorFunction') {
-      if (Array.isArray(expr)) {
-        for (let i = 0; i < expr.length; i += 1) {
-          yield* this.samples(expr[i]);
-        }
-      } else if (typeof expr === 'string') {
-        yield expr;
-      } else if (typeof expr === 'object') {
-        const keys = Object.keys(expr);
-        for (let i = 0; i < keys.length; i += 1) {
-          yield* this.samples(expr[keys[i]]);
-        }
-      } else {
-        yield expr;
-      }
-      return;
-    }
-    yield* space;
-  }
 }
 
 export const gridSample = (space, params = {}) => {
@@ -119,12 +108,11 @@ export const gridSample = (space, params = {}) => {
   return args;
 };
 
-export const gridSearch = (newIds, domain, trials, seed) => {
-  const rng = new RandomState(seed);
+export const gridSearch = (newIds, domain, trials) => {
   let rval = [];
   const gs = new GridSearch();
   newIds.forEach((newId) => {
-    const paramsEval = gs.eval(domain.expr, { rng });
+    const paramsEval = gs.eval(domain.expr);
     const result = domain.newResult();
     rval = [...rval, ...trials.newTrialDocs([newId], [result], [paramsEval])];
   });

@@ -1,6 +1,6 @@
 {
   "name": "hyperparameters",
-  "version": "0.25.3",
+  "version": "0.25.4",
   "description": "javascript hyperparameters search",
   "main": "lib/hyperparameters.js",
   "unpkg": "dist/hyperparameters.js",
