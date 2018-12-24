@@ -168,11 +168,12 @@ export class Trials {
     return this.countByStateSynced(arg, expTrials);
   };
 
-  losses = () => this.results.map(r => r.loss);
+  losses = () => this.results.map(r => r.loss || r.accuracy);
 
   statuses = () => this.results.map(r => r.status);
 
-  bestTrial(compare = (a, b) => a.loss < b.loss) {
+  bestTrial(compare = (a, b) =>
+    (a.loss !== undefined ? a.loss < b.loss : a.accuracy > b.accuracy)) {
     let best = this.trials[0];
     this.trials.forEach((trial) => {
       if (trial.result.status === STATUS_OK && compare(trial.result, best.result)) {
@@ -188,7 +189,8 @@ export class Trials {
   }
 
   get argmax() {
-    const best = this.bestTrial((a, b) => a.loss > b.loss);
+    const best = this.bestTrial((a, b) =>
+      (a.loss !== undefined ? a.loss > b.loss : a.accuracy > b.accuracy));
     return best !== undefined ? best.args : undefined;
   }
 }
@@ -210,12 +212,12 @@ export class Domain {
       if (result === undefined) {
         throw new Error('Optimization function should return a loss value');
       }
-      const { status, loss } = result;
+      const { status, loss, accuracy } = result;
       if (STATUS_STRINGS.indexOf(status) < 0) {
         throw new Error(`invalid status ${status}`);
       }
-      if (status === STATUS_OK && loss === undefined) {
-        throw new Error(`invalid loss ${loss}`);
+      if (status === STATUS_OK && loss === undefined && accuracy === undefined) {
+        throw new Error('invalid loss and accuracy');
       }
     }
     return result;
