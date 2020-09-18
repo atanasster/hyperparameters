@@ -112,7 +112,7 @@ export const gridSearch = (newIds, domain, trials) => {
   let rval = [];
   const gs = new GridSearch();
   newIds.forEach((newId) => {
-    const paramsEval = gs.eval(domain.expr);
+    const paramsEval = gs.eval(domain.expr, {rng: undefined});
     const result = domain.newResult();
     rval = [...rval, ...trials.newTrialDocs([newId], [result], [paramsEval])];
   });
